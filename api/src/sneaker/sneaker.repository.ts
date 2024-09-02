@@ -3,8 +3,8 @@ import { DataSource, DeleteResult, Repository } from 'typeorm';
 import { Sneaker } from './entities/sneaker.entity';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
-import { ApiQuery } from 'src/types/api.type';
 import { UpdateSneakerDto } from './dto/update-sneaker.dto';
+import { ApiQuery } from 'src/types/api.type';
 
 export class SneakerRepository extends Repository<Sneaker> {
   constructor(@InjectDataSource() datasource: DataSource) {
@@ -28,9 +28,9 @@ export class SneakerRepository extends Repository<Sneaker> {
     const query = this.createQueryBuilder('sneaker');
 
     if (sortedBy) {
-      query.orderBy('user.createdAt', sortedBy);
+      query.orderBy('sneaker.createdAt', sortedBy);
     } else {
-      query.orderBy('user.createdAt', 'DESC');
+      query.orderBy('sneaker.createdAt', 'DESC');
     }
 
     return {

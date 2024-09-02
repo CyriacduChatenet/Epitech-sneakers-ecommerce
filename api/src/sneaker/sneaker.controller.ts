@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { SneakerService } from './sneaker.service';
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
@@ -22,7 +23,7 @@ export class SneakerController {
   }
 
   @Get()
-  findAll(queries: ApiQuery) {
+  findAll(@Query() queries: ApiQuery) {
     return this.sneakerService.findAll(queries);
   }
 
