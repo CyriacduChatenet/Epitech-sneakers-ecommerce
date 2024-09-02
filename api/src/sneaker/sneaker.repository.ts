@@ -16,10 +16,6 @@ export class SneakerRepository extends Repository<Sneaker> {
     return await this.save(sneaker);
   }
 
-  async saveSneaker(sneaker: Sneaker) {
-    return await this.save(sneaker);
-  }
-
   async findAllSneakers(queries: ApiQuery) {
     let { page, limit, sortedBy } = queries;
     page = page ? +page : 1;
