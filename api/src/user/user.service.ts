@@ -9,10 +9,10 @@ import { DeleteResult } from 'typeorm';
 import { UpdateUserDTO } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repository';
-import { ApiQuery } from 'src/types/api.type';
-import { testEmailUtil } from 'src/utils/regex-test-email.util';
+import { ApiQuery } from '../types/api.type';
+import { testEmailUtil } from '../utils/regex-test-email.util';
 import { SignupUserInputDTO } from './dto/signup-user.dto';
-import { Role } from 'src/enums/role.enum';
+import { Role } from '../enums/role.enum';
 
 @Injectable()
 export class UserService {

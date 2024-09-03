@@ -1,10 +1,10 @@
 import { DataSource, DeleteResult, Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 
 import { Sneaker } from './entities/sneaker.entity';
-import { InjectDataSource } from '@nestjs/typeorm';
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
 import { UpdateSneakerDto } from './dto/update-sneaker.dto';
-import { ApiQuery } from 'src/types/api.type';
+import { ApiQuery } from '../types/api.type';
 
 export class SneakerRepository extends Repository<Sneaker> {
   constructor(@InjectDataSource() datasource: DataSource) {

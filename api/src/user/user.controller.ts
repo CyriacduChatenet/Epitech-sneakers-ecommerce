@@ -14,10 +14,10 @@ import { DeleteResult } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { ApiQuery } from 'src/types/api.type';
+import { ApiQuery } from '../types/api.type';
 import { SignupUserInputDTO } from './dto/signup-user.dto';
-import { Role } from 'src/enums/role.enum';
-import { Roles } from 'src/decorators/role.decorator';
+import { Role } from '../enums/role.enum';
+import { Roles } from '../decorators/role.decorator';
 
 @Controller('user')
 export class UserController {

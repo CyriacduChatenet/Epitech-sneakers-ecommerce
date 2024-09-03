@@ -3,6 +3,6 @@ export type ApiQuery = {
   limit?: number;
   sortedBy?: 'ASC' | 'DESC';
   username?: string;
-  email: string;
-  roles: string;
+  email?: string;
+  roles?: string;
 };

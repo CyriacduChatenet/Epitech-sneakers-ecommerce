@@ -1,8 +1,8 @@
 import { DataSource, DeleteResult, Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 
 import { User } from './entities/user.entity';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { ApiQuery } from 'src/types/api.type';
+import { ApiQuery } from '../types/api.type';
 import { SignupUserInputDTO } from './dto/signup-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
 

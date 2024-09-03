@@ -8,10 +8,11 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
+
 import { SneakerService } from './sneaker.service';
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
 import { UpdateSneakerDto } from './dto/update-sneaker.dto';
-import { ApiQuery } from 'src/types/api.type';
+import { ApiQuery } from '../types/api.type';
 
 @Controller('sneaker')
 export class SneakerController {
