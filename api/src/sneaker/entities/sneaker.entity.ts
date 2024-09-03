@@ -1,5 +1,6 @@
-import { Timestamp } from 'src/utils/timestamps.util';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Timestamp } from '../../utils/timestamps.util';
 
 @Entity()
 export class Sneaker extends Timestamp {
