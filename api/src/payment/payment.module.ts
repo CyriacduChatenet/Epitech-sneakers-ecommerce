@@ -13,7 +13,7 @@ import { StripeModule } from './stripe/stripe.module';
     ConfigModule.forRoot(),
     NestStripeModule.forRoot({
       apiKey: process.env.STRIPE_API_KEY,
-      apiVersion: '2024-06-20',
+      apiVersion: '2022-11-15',
     }),
     MailModule,
     CustomerModule,
