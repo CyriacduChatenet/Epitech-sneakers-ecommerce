@@ -8,8 +8,10 @@ import Page404 from "../pages/errors/404";
 import PrivateRoute from "./private.route";
 import Dashboard from "../pages/user/dashboard/dashboard";
 import AdminDashboard from "../pages/admin/dashboard/dashboard";
+import useAuth from "../hooks/auth.hook";
 
 const AppRouter: FC = () => {
+  useAuth();
   return (
     <Router>
         <Routes>
