@@ -5,24 +5,27 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
 import { UpdateSneakerDto } from './dto/update-sneaker.dto';
 import { SneakerRepository } from './sneaker.repository';
-import { ApiQuery } from 'src/types/api.type';
-import { firstValueFrom } from 'rxjs';
+import { ApiQuery } from '../types/api.type';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class SneakerService {
+export class SneakerService implements OnApplicationBootstrap {
   constructor(
     private sneakerRepository: SneakerRepository,
     private httpService: HttpService,
+    private configService: ConfigService,
   ) {}
 
-  // async onApplicationBootstrap() {
-  //   console.log('Application has bootstrapped');
-  //   await this.findAllFromExternalApi();
-  // }
+  async onApplicationBootstrap() {
+    console.log('Application has bootstrapped');
+    await this.checkIfExternalDataAreInDatabase();
+    // await this.findAllFromExternalApi();
+  }
 
   async create(createSneakerDto: CreateSneakerDto) {
     try {
@@ -48,21 +51,39 @@ export class SneakerService {
     }
   }
 
-  // async findAllFromExternalApi() {
-  //   const response = await firstValueFrom(
-  //     this.httpService.get('http://54.37.12.181:1337/api/sneakers'),
-  //   );
+  private async findAllFromExternalApi(firstSneakerItemExternalID: number) {
+    const response = await firstValueFrom(
+      this.httpService.get(
+        `${this.configService.get<string>('EXTERNAL_API_URL')}/api/sneakers`,
+      ),
+    );
 
-  //   console.log('data', response.data.data, 'meta', response.data.meta);
+    const firstItemIdOfExternalDB = response.data.data.find(
+      (item) => item.id === firstSneakerItemExternalID,
+    ).id;
 
-  //   response.data.data.forEach((sneaker) => {
-  //     sneaker.attributes.external_id = sneaker.id;
-  //     delete sneaker.id;
-  //     delete sneaker.attributes.createdAt;
-  //     delete sneaker.attributes.updatedAt;
-  //     this.create(sneaker.attributes);
-  //   });
-  // }
+    if (firstItemIdOfExternalDB !== firstSneakerItemExternalID) {
+      response.data.data.forEach((sneaker) => {
+        sneaker.attributes.external_id = sneaker.id;
+        delete sneaker.id;
+        delete sneaker.attributes.createdAt;
+        delete sneaker.attributes.updatedAt;
+        this.create(sneaker.attributes);
+      });
+    }
+  }
+
+  private async checkIfExternalDataAreInDatabase() {
+    try {
+      const dataInDatabase = await this.findAll({ page: 1, limit: 10 });
+      const firstItemIdInDB = dataInDatabase.data[0].external_id;
+      await this.findAllFromExternalApi(firstItemIdInDB);
+    } catch (err) {
+      throw new NotFoundException(
+        `Data of external sneaker's API are not found`,
+      );
+    }
+  }
 
   async update(id: string, updateSneakerDto: UpdateSneakerDto) {
     try {
