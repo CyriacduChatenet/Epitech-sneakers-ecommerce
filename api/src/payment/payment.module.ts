@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { StripeModule as NestStripeModule } from 'nestjs-stripe';
 import { ConfigModule } from '@nestjs/config';
 
 import { PaymentService } from './payment.service';
@@ -9,16 +8,7 @@ import { CustomerModule } from './customer/customer.module';
 import { StripeModule } from './stripe/stripe.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    NestStripeModule.forRoot({
-      apiKey: process.env.STRIPE_API_KEY,
-      apiVersion: '2022-11-15',
-    }),
-    MailModule,
-    CustomerModule,
-    StripeModule,
-  ],
+  imports: [ConfigModule.forRoot(), MailModule, CustomerModule, StripeModule],
   controllers: [PaymentController],
   providers: [PaymentService],
   exports: [PaymentService],

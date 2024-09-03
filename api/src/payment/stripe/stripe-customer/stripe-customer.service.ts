@@ -1,49 +1,55 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { InjectStripe } from 'nestjs-stripe';
+import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 
 @Injectable()
 export class StripeCustomerService {
-  constructor(@InjectStripe() private readonly stripeClient: Stripe) {}
+  private stripe: Stripe;
+
+  constructor(configService: ConfigService) {
+    this.stripe = new Stripe(configService.get<string>('STRIPE_API_KEY'), {
+      apiVersion: '2024-06-20',
+    });
+  }
 
   async createStripeCustomer(stripeCredentials: {
     email: string;
     name: string;
   }) {
-    return await this.stripeClient.customers.create({
+    return await this.stripe.customers.create({
       email: stripeCredentials.email,
       name: stripeCredentials.name,
     });
   }
 
   async findAll() {
-    return await this.stripeClient.customers.list();
+    return await this.stripe.customers.list();
   }
 
   async findOne(customerId: string) {
-    return await this.stripeClient.customers.retrieve(customerId);
+    return await this.stripe.customers.retrieve(customerId);
   }
 
   async update(customerId: string, email: string) {
-    return await this.stripeClient.customers.update(customerId, { email });
+    return await this.stripe.customers.update(customerId, { email });
   }
 
   async delete(customerId: string) {
-    return await this.stripeClient.customers.del(customerId);
+    return await this.stripe.customers.del(customerId);
   }
 
   async addPaymentMethod(customerId: string, card): Promise<any> {
     try {
-      const paymentMethod = await this.stripeClient.paymentMethods.create({
+      const paymentMethod = await this.stripe.paymentMethods.create({
         type: 'card',
         card,
       });
 
-      await this.stripeClient.paymentMethods.attach(paymentMethod.id, {
+      await this.stripe.paymentMethods.attach(paymentMethod.id, {
         customer: customerId,
       });
 
-      const customer = await this.stripeClient.customers.update(customerId, {
+      const customer = await this.stripe.customers.update(customerId, {
         invoice_settings: {
           default_payment_method: paymentMethod.id,
         },
