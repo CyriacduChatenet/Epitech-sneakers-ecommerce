@@ -1,8 +1,16 @@
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useContext, useState } from "react";
 
 type Context = {
-    user: Object
-    setUser: Dispatch<SetStateAction<Object>>;
+    user: {
+        email: string;
+        id: string;
+        roles: string;
+    }
+    setUser: Dispatch<SetStateAction<{
+        email: string;
+        id: string;
+        roles: string;
+    }>>;
 };
 
 interface IProps {
@@ -10,12 +18,16 @@ interface IProps {
 };
 
 const UserContext = createContext<Context>({
-    user: {},
+    user: {
+        email:'',
+        id:'',
+        roles:''
+    },
     setUser: () => {},
 });
 
 export const UserProvider: FC<IProps> = ({ children }) => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({ email: '', id:'', roles: ''});
 
     return (
         <UserContext.Provider value={{user, setUser}}>

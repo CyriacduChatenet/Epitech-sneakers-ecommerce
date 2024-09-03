@@ -8,10 +8,8 @@ import Page404 from "../pages/errors/404";
 import PrivateRoute from "./private.route";
 import Dashboard from "../pages/user/dashboard/dashboard";
 import AdminDashboard from "../pages/admin/dashboard/dashboard";
-import useAuth from "../hooks/auth.hook";
 
 const AppRouter: FC = () => {
-  useAuth();
   return (
     <Router>
         <Routes>
@@ -20,11 +18,11 @@ const AppRouter: FC = () => {
           <Route path="/signin" element={<SigninPage/>}/>
           <Route path="/signup" element={<SignupPage/>}/>
 
-          <Route element={<PrivateRoute user={{}} isAdminRoute={false}/>}>
+          <Route element={<PrivateRoute user={{}}/>}>
             <Route path="/dashboard" element={<Dashboard/>} />
           </Route>
 
-          <Route element={<PrivateRoute user={{}} isAdminRoute={true}/>}>
+          <Route element={<PrivateRoute user={{}}/>}>
             <Route path="/dashboard-admin" element={<AdminDashboard/>} />
           </Route>
 
