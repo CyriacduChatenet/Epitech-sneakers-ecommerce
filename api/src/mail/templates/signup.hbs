@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Welcome to KicksFactory!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header img {
+            max-width: 150px;
+        }
+        
+        .content {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .cta-button {
+            display: flex; 
+            padding-top: 0.375rem;
+            padding-bottom: 0.375rem; 
+            padding-left: 0.75rem;
+            padding-right: 0.75rem; 
+            justify-content: center; 
+            border-radius: 0.375rem; 
+            width: 50%; 
+            font-size: 0.875rem;
+            line-height: 1.25rem; 
+            font-weight: 600; 
+            line-height: 1.5rem; 
+            color: #ffffff; 
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); 
+            background-color: rgb(8, 145, 178);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{url}}/logo.svg" alt="KicksFactory Logo">
+            <h1>Welcome to KicksFactory!</h1>
+        </div>
+        <div class="content">
+            <p>Dear {{reciever}},</p>
+            <p>Thank you for joining KicksFactory, the ultimate travel management platform. We're excited to have you on board!</p>
+            <p>With KicksFactory, you can easily plan your trips, track your itineraries, and stay organized throughout your journey.</p>
+            <p>Get started now and explore the world with KicksFactory!</p>
+            <p>
+                <a href="{{url}}/signin" class="cta-button">Sign In</a>
+            </p>
+            <p>If you have any questions or need assistance, feel free to contact our support team at support@travel-tailor.com.</p>
+            <p>Happy travels!</p>
+            <p>The KicksFactory Team</p>
+        </div>
+    </div>
+</body>
+</html>
