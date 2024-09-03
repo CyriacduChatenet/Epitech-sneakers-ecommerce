@@ -14,18 +14,18 @@ import { ApiQuery } from '../types/api.type';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class SneakerService implements OnApplicationBootstrap {
+export class SneakerService {
   constructor(
     private sneakerRepository: SneakerRepository,
     private httpService: HttpService,
     private configService: ConfigService,
   ) {}
 
-  async onApplicationBootstrap() {
-    console.log('Application has bootstrapped');
-    await this.checkIfExternalDataAreInDatabase();
-    // await this.findAllFromExternalApi();
-  }
+  // async onApplicationBootstrap() {
+  //   console.log('Application has bootstrapped');
+  //   await this.checkIfExternalDataAreInDatabase();
+  //   // await this.findAllFromExternalApi();
+  // }
 
   async create(createSneakerDto: CreateSneakerDto) {
     try {

@@ -11,12 +11,18 @@ import { UserService } from '../user/user.service';
 import { Role } from '../enums/role.enum';
 import { SignupUserInputDTO } from '../user/dto/signup-user.dto';
 import { LoginUserInputDTO } from '../user/dto/login-user.dto';
+import { MailService } from '../mail/mail.service';
+import { ResetPasswordTokenService } from './reset-password-token/reset-password-token.service';
+import { ForgotPasswordDTO } from './dto/forgotPassword.dto';
+import { ResetPasswordDTO } from './dto/resetPassword.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private mailService: MailService,
+    private resetPasswordTokenService: ResetPasswordTokenService,
   ) {}
 
   public async validateUser(email: string, password: string) {
@@ -80,6 +86,8 @@ export class AuthService {
         signupUserInputDTO.roles as Role,
       );
 
+      await this.mailService.sendSignupMail(signupUserInputDTO.email);
+
       const payload = {
         email: signupUserInputDTO.email,
         password: signupUserInputDTO.password,
@@ -94,6 +102,48 @@ export class AuthService {
         message: 'Unauthorized to signup',
         err,
       });
+    }
+  }
+
+  public async forgotPassword(forgotPasswordDto: ForgotPasswordDTO) {
+    try {
+      const user = await this.userService.findOneByEmail(
+        forgotPasswordDto.email,
+      );
+      const resetToken = await this.resetPasswordTokenService.create(user.id);
+      const userUpdated = await this.userService.update(user.id, {
+        resetPasswordToken: resetToken.id,
+      });
+      await this.mailService.sendForgotPasswordMail(
+        forgotPasswordDto.email,
+        `${process.env.CLIENT_APP_URL}/reset-password/${resetToken.token}`,
+      );
+      return userUpdated;
+    } catch (err) {
+      throw new HttpException(
+        'User with this email does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  public async resetPassword(
+    resetToken: string,
+    resetPasswordDto: ResetPasswordDTO,
+  ) {
+    try {
+      const token = await this.resetPasswordTokenService.findOneByToken(
+        resetToken.slice(0, -1),
+      );
+      const user = await this.userService.findOneByEmail(token.user.email);
+      const userUpdated = await this.userService.update(user.id, {
+        ...user,
+        password: await bcrypt.hash(resetPasswordDto.password, 10),
+      });
+      await this.mailService.sendConfirmResetPasswordMail(user.email);
+      return userUpdated;
+    } catch (error) {
+      throw new HttpException('Invalid token', HttpStatus.BAD_REQUEST);
     }
   }
 }
