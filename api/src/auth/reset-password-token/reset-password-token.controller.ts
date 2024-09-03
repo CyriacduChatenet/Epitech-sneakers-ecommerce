@@ -12,8 +12,8 @@ import {
 import { ResetPasswordTokenService } from './reset-password-token.service';
 import { UpdateResetPasswordTokenDto } from './dto/update-reset-password-token.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { Roles } from 'src/decorators/role.decorator';
-import { Role } from 'src/enums/role.enum';
+import { Roles } from '../../decorators/role.decorator';
+import { Role } from '../../enums/role.enum';
 
 @Controller('reset-password-token')
 export class ResetPasswordTokenController {

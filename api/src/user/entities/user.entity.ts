@@ -8,7 +8,8 @@ import {
 
 import { Timestamp } from '../../utils/timestamps.util';
 import { Role } from '../../enums/role.enum';
-import { ResetPasswordToken } from 'src/auth/reset-password-token/entities/reset-password-token.entity';
+import { ResetPasswordToken } from '../../auth/reset-password-token/entities/reset-password-token.entity';
+import { Customer } from '../../payment/customer/entities/customer.entity';
 
 @Entity()
 export class User extends Timestamp {
@@ -35,4 +36,8 @@ export class User extends Timestamp {
   @OneToOne(() => ResetPasswordToken)
   @JoinColumn()
   resetPasswordToken: ResetPasswordToken;
+
+  @OneToOne(() => Customer, (customer) => customer.user, { cascade: true })
+  @JoinColumn()
+  customer: Customer;
 }

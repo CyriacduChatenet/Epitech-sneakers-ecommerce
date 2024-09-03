@@ -13,19 +13,29 @@ import { ApiQuery } from '../types/api.type';
 import { testEmailUtil } from '../utils/regex-test-email.util';
 import { SignupUserInputDTO } from './dto/signup-user.dto';
 import { Role } from '../enums/role.enum';
+import { CustomerService } from '../payment/customer/customer.service';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private readonly customerService: CustomerService,
+  ) {}
 
   async create(signupUserDto: SignupUserInputDTO, roles: Role): Promise<User> {
     try {
       if (testEmailUtil(signupUserDto.email)) {
+        const customer = await this.customerService.create({
+          email: signupUserDto.email,
+          name: signupUserDto.username,
+        });
+
         const user = new User();
         user.username = signupUserDto.username;
         user.email = signupUserDto.email;
         user.password = signupUserDto.password;
         user.roles = roles;
+        user.customer = customer;
 
         return await this.userRepository.save(user);
       } else {
