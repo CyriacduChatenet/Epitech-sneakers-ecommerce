@@ -84,7 +84,6 @@ const ShopItem = () => {
     event.preventDefault();
     setOpen(true);
     setShoppingCart((prev) => [...prev, sneaker]);
-    console.log("submit");
   };
 
   useEffect(() => {

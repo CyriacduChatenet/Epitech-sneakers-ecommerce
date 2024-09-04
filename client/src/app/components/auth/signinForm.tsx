@@ -25,7 +25,6 @@ export const SigninForm: FC = () => {
 
     if(isAuth) {
       setAuth(isAuth);
-      console.log('isAuth', isAuth);
       const encodedToken = window.localStorage.getItem("access_token");
 
       if (encodedToken) {

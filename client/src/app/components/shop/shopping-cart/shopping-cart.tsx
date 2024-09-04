@@ -9,8 +9,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import UserService from "../../../services/user.service";
 import useUser from "../../../context/user.context";
 import useShoppingCart from "../../../context/shopping-cart.context";
-import { loadStripe } from "@stripe/stripe-js";
-import { API } from "../../../utils/axios.utils";
+import PaymentService from "../../../services/payment.service";
 
 const products = [
   {
@@ -41,9 +40,7 @@ const products = [
 ];
 
 export const ShoppingCart = () => {
-  const stripePromise = loadStripe(
-    `${import.meta.env.VITE_APP_STRIPE_PUBLIC_KEY}`
-  );
+  const paymentService = new PaymentService();
   const { user } = useUser(); 
   const { open, setOpen, shoppingCart } = useShoppingCart();
   const [stripeCustomerId, setStripeCustomerId] = useState("");
@@ -51,26 +48,12 @@ export const ShoppingCart = () => {
   const userService = new UserService();
 
   const handlePayed = async () => {
-    console.log(shoppingCart);
-    const data = await API().post(`${import.meta.env.VITE_APP_API_URL}/payment/checkout/${stripeCustomerId}`, { location: `Bordeaux, Gironde, France`, amount: 10000, price_id: shoppingCart[0].stripe_price_id });
-    console.log(data);
-
-  const stripe = await stripePromise
-  if (stripe) {
-    const result = await stripe.redirectToCheckout({
-      sessionId: data.data.sessionId,
-    })
-    if (result.error) {
-      console.error(result.error.message)
-    }
-  }
+    return await paymentService.createCheckoutSession(shoppingCart, stripeCustomerId);
   };
 
   const  fetchUserById = async () => {
-    console.log(user);
     const userInDB = await userService.findOneById(user.id);
     setStripeCustomerId(userInDB?.data?.customer?.stripeId);
-    console.log(stripeCustomerId);
   }
 
   useEffect(() => {
