@@ -6,12 +6,13 @@ import {
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { ConfigService } from '@nestjs/config';
 
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
 import { UpdateSneakerDto } from './dto/update-sneaker.dto';
 import { SneakerRepository } from './sneaker.repository';
 import { ApiQuery } from '../types/api.type';
-import { ConfigService } from '@nestjs/config';
+import { StripeProductService } from '../payment/stripe/stripe-product/stripe-product.service';
 
 @Injectable()
 export class SneakerService implements OnApplicationBootstrap {
@@ -19,6 +20,7 @@ export class SneakerService implements OnApplicationBootstrap {
     private sneakerRepository: SneakerRepository,
     private httpService: HttpService,
     private configService: ConfigService,
+    private stripeProductService: StripeProductService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -72,9 +74,23 @@ export class SneakerService implements OnApplicationBootstrap {
 
         data.forEach(async (item: any) => {
           console.log(item);
+          const stripeProduct =
+            await this.stripeProductService.createStripeProduct({
+              name: item.attributes.name,
+              description: 'Sneaker',
+              images: [],
+              price: item.attributes.retailPrice * 100,
+            });
+
+          const stripe_price_id = await this.stripeProductService.findOne(
+            stripeProduct.id,
+          );
+
           await this.create({
             external_id: item.id,
             ...item.attributes,
+            stripe_product_id: stripeProduct.id,
+            stripe_price_id: stripe_price_id.default_price,
           });
         });
       }

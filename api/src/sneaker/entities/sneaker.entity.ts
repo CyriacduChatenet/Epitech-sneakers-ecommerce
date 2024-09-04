@@ -64,4 +64,10 @@ export class Sneaker extends Timestamp {
 
   @Column()
   UID: string;
+
+  @Column()
+  stripe_product_id: string;
+
+  @Column()
+  stripe_price_id: string;
 }

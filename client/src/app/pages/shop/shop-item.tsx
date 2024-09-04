@@ -72,7 +72,7 @@ const ShopItem = () => {
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
   const [sneaker, setSneaker] = useState<Sneaker>();
   const { id } = useParams();
-  const { open, setOpen } = useShoppingCart();
+  const { open, setOpen, setShoppingCart } = useShoppingCart();
   const sneakerService = new SneakerService();
 
   const fetchSneaker = async () => {
@@ -83,8 +83,9 @@ const ShopItem = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setOpen(true);
+    setShoppingCart((prev) => [...prev, sneaker]);
     console.log("submit");
-  }
+  };
 
   useEffect(() => {
     fetchSneaker();
@@ -135,8 +136,7 @@ const ShopItem = () => {
 
           {/* Image gallery */}
           <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-          <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-            </div>
+            <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block"></div>
             <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
               <img
                 alt={product.images[0].alt}
@@ -331,9 +331,7 @@ const ShopItem = () => {
                 <h3 className="sr-only">Description</h3>
 
                 <div className="space-y-6">
-                  <p className="text-base text-gray-900">
-                    {sneaker?.story}
-                  </p>
+                  <p className="text-base text-gray-900">{sneaker?.story}</p>
                 </div>
               </div>
 

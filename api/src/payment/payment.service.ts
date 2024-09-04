@@ -16,30 +16,27 @@ export class PaymentService {
 
   async createCheckoutSession(
     createCheckoutDto: CreateCheckoutDto,
-  ): Promise<string> {
-    try {
-      const session = await this.stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        customer: createCheckoutDto.customer_id,
-        line_items: [
-          {
-            price: createCheckoutDto.price_id,
-            quantity: 1,
-          },
-        ],
-        mode: 'subscription',
-        subscription_data: {
-          trial_period_days: 30,
+  ): Promise<any> {
+    // try {
+    const session = await this.stripe.checkout.sessions.create({
+      payment_method_types: ['card'], // Méthodes de paiement acceptées (ici, uniquement carte)
+      customer: createCheckoutDto.customer_id, // Identifiant du client Stripe
+      line_items: [
+        {
+          price: createCheckoutDto.price_id, // Identifiant du prix dans Stripe
+          quantity: 1, // Quantité d'articles
         },
-        success_url: `${this.configService.get('CLIENT_APP_URL')}/payment/success`,
-        cancel_url: `${this.configService.get('CLIENT_APP_URL')}/payment/cancel`,
-      });
+      ],
+      mode: 'payment', // Changement du mode à 'payment' pour un paiement unique
+      success_url: `${this.configService.get('CLIENT_APP_URL')}/payment/success`, // URL de succès après paiement
+      cancel_url: `${this.configService.get('CLIENT_APP_URL')}/payment/cancel`, // URL d'annulation après paiement
+    });
 
-      console.log(session);
+    console.log(session);
+    return session.id;
 
-      return session.id;
-    } catch (err) {
-      throw new HttpException('Failed to recieve payment', 402);
-    }
+    // } catch (err) {
+    //   throw new HttpException('Failed to recieve payment', 402);
+    // }
   }
 }

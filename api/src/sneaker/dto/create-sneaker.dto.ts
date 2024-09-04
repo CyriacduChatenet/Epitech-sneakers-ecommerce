@@ -25,4 +25,6 @@ export class CreateSneakerDto {
   story: string;
   publishedAt: Date;
   UID: string;
+  stripe_product_id: string;
+  stripe_price_id: string;
 }

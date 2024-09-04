@@ -13,7 +13,7 @@ export class PaymentController {
   async createCheckoutSession(
     @Param('customerId') customerId: string,
     @Body() { amount, price_id }: { amount: number; price_id: string },
-  ): Promise<{ sessionId: string }> {
+  ): Promise<any> {
     const createCheckoutDto: {
       currency: string;
       amount: number;

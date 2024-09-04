@@ -45,13 +45,14 @@ export const ShoppingCart = () => {
     `${import.meta.env.VITE_APP_STRIPE_PUBLIC_KEY}`
   );
   const { user } = useUser(); 
-  const { open, setOpen } = useShoppingCart();
+  const { open, setOpen, shoppingCart } = useShoppingCart();
   const [stripeCustomerId, setStripeCustomerId] = useState("");
 
   const userService = new UserService();
 
   const handlePayed = async () => {
-    const data = await API().post(`${import.meta.env.VITE_APP_API_URL}/payment/checkout/${stripeCustomerId}`, { location: `Bordeaux, Gironde, France`, amount: 10000 });
+    console.log(shoppingCart);
+    const data = await API().post(`${import.meta.env.VITE_APP_API_URL}/payment/checkout/${stripeCustomerId}`, { location: `Bordeaux, Gironde, France`, amount: 10000, price_id: shoppingCart[0].stripe_price_id });
     console.log(data);
 
   const stripe = await stripePromise
