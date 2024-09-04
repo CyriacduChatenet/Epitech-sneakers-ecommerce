@@ -9,12 +9,17 @@ import Dashboard from "../pages/user/dashboard/dashboard";
 import AdminDashboard from "../pages/admin/dashboard/dashboard";
 import PrivateRoute from "./private.route";
 import CookiesPolicyPage from "../pages/policies/cookies/cookies";
+import ShopPage from "../pages/shop/shop";
+import ShopItemPage from "../pages/shop/shop-item";
 
 const AppRouter: FC = () => {
   return (
     <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
+
+          <Route path="/shop/:sex" element={<ShopPage />} />
+          <Route path="/shop/product/:id" element={<ShopItemPage />} />
 
           <Route path="/signin" element={<SigninPage/>}/>
           <Route path="/signup" element={<SignupPage/>}/>

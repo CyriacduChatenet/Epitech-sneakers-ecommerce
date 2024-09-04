@@ -14,18 +14,17 @@ import { ApiQuery } from '../types/api.type';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class SneakerService {
+export class SneakerService implements OnApplicationBootstrap {
   constructor(
     private sneakerRepository: SneakerRepository,
     private httpService: HttpService,
     private configService: ConfigService,
   ) {}
 
-  // async onApplicationBootstrap() {
-  //   console.log('Application has bootstrapped');
-  //   await this.checkIfExternalDataAreInDatabase();
-  //   // await this.findAllFromExternalApi();
-  // }
+  async onApplicationBootstrap() {
+    console.log('Application has bootstrapped');
+    await this.checkIfExternalDataAreInDatabase();
+  }
 
   async create(createSneakerDto: CreateSneakerDto) {
     try {
@@ -51,33 +50,34 @@ export class SneakerService {
     }
   }
 
-  private async findAllFromExternalApi(firstSneakerItemExternalID: number) {
+  private async findAllFromExternalApi() {
     const response = await firstValueFrom(
       this.httpService.get(
         `${this.configService.get<string>('EXTERNAL_API_URL')}/api/sneakers`,
       ),
     );
 
-    const firstItemIdOfExternalDB = response.data.data.find(
-      (item) => item.id === firstSneakerItemExternalID,
-    ).id;
-
-    if (firstItemIdOfExternalDB !== firstSneakerItemExternalID) {
-      response.data.data.forEach((sneaker) => {
-        sneaker.attributes.external_id = sneaker.id;
-        delete sneaker.id;
-        delete sneaker.attributes.createdAt;
-        delete sneaker.attributes.updatedAt;
-        this.create(sneaker.attributes);
-      });
-    }
+    return response;
   }
 
   private async checkIfExternalDataAreInDatabase() {
     try {
       const dataInDatabase = await this.findAll({ page: 1, limit: 10 });
-      const firstItemIdInDB = dataInDatabase.data[0].external_id;
-      await this.findAllFromExternalApi(firstItemIdInDB);
+      const totalItemInTable = dataInDatabase.total;
+
+      if (totalItemInTable === 0) {
+        const response = await this.findAllFromExternalApi();
+        console.log(response.data.data);
+        const data = response.data.data;
+
+        data.forEach(async (item: any) => {
+          console.log(item);
+          await this.create({
+            external_id: item.id,
+            ...item.attributes,
+          });
+        });
+      }
     } catch (err) {
       throw new NotFoundException(
         `Data of external sneaker's API are not found`,
