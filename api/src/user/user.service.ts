@@ -71,6 +71,14 @@ export class UserService {
     }
   }
 
+  public async findOneById(id: string): Promise<User> {
+    try {
+      return await this.userRepository.findOneUserById(id);
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
+  }
+
   async update(id: string, signupUserDto: UpdateUserDTO | unknown) {
     try {
       return await this.userRepository.updateUser(id, signupUserDto);

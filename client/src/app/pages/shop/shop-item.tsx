@@ -6,6 +6,8 @@ import ShopLayout from "../../components/shop/layout/layout";
 import { Sneaker } from "../../types/sneaker.type";
 import { useParams } from "react-router-dom";
 import SneakerService from "../../services/sneaker.service";
+import { ShoppingCart } from "../../components/shop/shopping-cart/shopping-cart";
+import useShoppingCart from "../../context/shopping-cart.context";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -70,12 +72,19 @@ const ShopItem = () => {
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
   const [sneaker, setSneaker] = useState<Sneaker>();
   const { id } = useParams();
+  const { open, setOpen } = useShoppingCart();
   const sneakerService = new SneakerService();
 
   const fetchSneaker = async () => {
     const response = await sneakerService.findOneById(`${id}`);
     setSneaker(response?.data);
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setOpen(true);
+    console.log("submit");
+  }
 
   useEffect(() => {
     fetchSneaker();
@@ -210,7 +219,7 @@ const ShopItem = () => {
                 </div>
               </div>
 
-              <form className="mt-10">
+              <form className="mt-10" onSubmit={handleSubmit}>
                 {/* Colors */}
                 <div>
                   <h3 className="text-sm font-medium text-gray-900">Color</h3>
@@ -355,6 +364,7 @@ const ShopItem = () => {
           </div>
         </div>
       </div>
+      <ShoppingCart />
     </ShopLayout>
   );
 };

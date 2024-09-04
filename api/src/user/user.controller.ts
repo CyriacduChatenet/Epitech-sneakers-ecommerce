@@ -41,6 +41,11 @@ export class UserController {
     return await this.userService.findOneByEmail(email);
   }
 
+  @Get('/id/:id')
+  async findOneById(@Param('id') id: string): Promise<User> {
+    return await this.userService.findOneById(id);
+  }
+
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @Roles(Role.User, Role.Admin)

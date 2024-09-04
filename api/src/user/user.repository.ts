@@ -25,7 +25,10 @@ export class UserRepository extends Repository<User> {
     page = page ? +page : 1;
     limit = limit ? +limit : 10;
 
-    const query = this.createQueryBuilder('user');
+    const query = this.createQueryBuilder('user').leftJoinAndSelect(
+      'user.customer',
+      'customer',
+    );
 
     if (sortedBy) {
       query.orderBy('user.createdAt', sortedBy);
@@ -58,7 +61,15 @@ export class UserRepository extends Repository<User> {
 
   async findOneUserByEmail(email: string): Promise<User> {
     return await this.createQueryBuilder('user')
+      .leftJoinAndSelect('user.customer', 'customer')
       .where('user.email = :email', { email })
+      .getOne();
+  }
+
+  async findOneUserById(id: string): Promise<User> {
+    return await this.createQueryBuilder('user')
+      .leftJoinAndSelect('user.customer', 'customer')
+      .where('user.id = :id', { id })
       .getOne();
   }
 
