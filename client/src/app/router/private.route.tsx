@@ -1,12 +1,10 @@
-import { FC } from "react";
 import { Navigate } from "react-router-dom";
 
-const PrivateRoute: FC<any> = ({ user, children }) => {
-  if (!user) {
-    return <Navigate to="/signin" replace />;
-  }
+import useAuth from "../context/auth.context";
 
-  return children;
+const PrivateRoute = ({ Component }) => {
+    const { auth } = useAuth();
+ 
+  return auth ? <Component /> : <Navigate to="/signin" />;
 };
-
 export default PrivateRoute;

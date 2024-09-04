@@ -23,6 +23,19 @@ class AuthService {
             console.error(err);
         }
     }
+
+    signout() {
+        try {
+            window.localStorage.removeItem('access_token');
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    isAuthenticated() {
+        return localStorage.getItem('authToken') !== null;
+      };
+      
 }
 
 export default AuthService;

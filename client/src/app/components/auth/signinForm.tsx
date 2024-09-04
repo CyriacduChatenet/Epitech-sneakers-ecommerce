@@ -5,10 +5,13 @@ import { jwtDecode } from "jwt-decode";
 import AuthService from "../../services/auth.service";
 import useUser from "../../context/user.context";
 import { useNavigate } from "react-router-dom";
+import { Role } from "../../enums/role.enum";
+import useAuth from "../../context/auth.context";
 
 export const SigninForm: FC = () => {
     const authService = new AuthService();
     const { setUser } = useUser();
+    const { setAuth } = useAuth();
   const {
     register,
     handleSubmit,
@@ -18,26 +21,33 @@ export const SigninForm: FC = () => {
 
 
   const onSubmit = async (data) => {
-    console.log(data)
     const isAuth = await authService.signin(data);
-    console.log('isAuth', isAuth);
-    const encodedToken = window.localStorage.getItem("access_token");
 
-    if (encodedToken) {
-      const decodedToken: {
-        email: string;
-        id: string;
-        roles: string;
-      } = jwtDecode(encodedToken);
-      
-      setUser({
-        email: decodedToken.email,
-        id: decodedToken.id,
-        roles: decodedToken.roles,
-      });
+    if(isAuth) {
+      setAuth(isAuth);
+      console.log('isAuth', isAuth);
+      const encodedToken = window.localStorage.getItem("access_token");
+
+      if (encodedToken) {
+        const decodedToken: {
+          email: string;
+          id: string;
+          roles: string;
+        } = jwtDecode(encodedToken);
+        
+        setUser({
+          email: decodedToken.email,
+          id: decodedToken.id,
+          roles: decodedToken.roles,
+        });
+  
+        if(decodedToken.roles === Role.Admin) {
+          navigate('/admin/dashboard');
+      } else {
+          navigate('/dashboard');
+      }
     }
-
-    navigate('/dashboard');
+    }
   };
 
   return (
