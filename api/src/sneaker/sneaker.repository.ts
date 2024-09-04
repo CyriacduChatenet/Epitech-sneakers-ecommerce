@@ -17,7 +17,7 @@ export class SneakerRepository extends Repository<Sneaker> {
   }
 
   async findAllSneakers(queries: ApiQuery) {
-    let { page, limit, sortedBy } = queries;
+    let { page, limit, sortedBy, gender } = queries;
     page = page ? +page : 1;
     limit = limit ? +limit : 10;
 
@@ -27,6 +27,10 @@ export class SneakerRepository extends Repository<Sneaker> {
       query.orderBy('sneaker.createdAt', sortedBy);
     } else {
       query.orderBy('sneaker.createdAt', 'DESC');
+    }
+
+    if (gender) {
+      query.where('sneaker.gender = :gender', { gender });
     }
 
     return {
