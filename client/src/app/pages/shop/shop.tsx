@@ -1,17 +1,37 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { ProductList } from "../../components/shop/product-list/product-list";
 import Pagination from "../../components/common/pagination/pagination";
-import { Navigation } from "../../components/shop/navigation/navigation";
+import ShopLayout from "../../components/shop/layout/layout";
+import SneakerService from "../../services/sneaker.service";
+import { Sneaker } from "../../types/sneaker.type";
+import { useParams } from "react-router-dom";
 
 const ShopPage: FC = () => {
-    return (
-        <div>
-            <Navigation/>
-            <ProductList />
-            <Pagination />
-        </div>
+  const sneakerService = new SneakerService();
+
+  const [products, setProducts] = useState<Sneaker[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const { gender } = useParams();
+
+  const fetchSneakers = async () => {
+    const result = await sneakerService.findAll(
+      `page=1&limit=100&gender=${gender}`
     );
-}
+    setProducts(result?.data.data);
+    setTotal(result?.data.total);
+  };
+
+  useEffect(() => {
+    fetchSneakers();
+  }, [gender]);
+
+  return (
+    <ShopLayout>
+      <ProductList products={products} total={total} gender={`${gender}`} />
+      <Pagination total={total} />
+    </ShopLayout>
+  );
+};
 
 export default ShopPage;

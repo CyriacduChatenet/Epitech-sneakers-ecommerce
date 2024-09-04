@@ -1,26 +1,28 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 import { ProductCard } from "../product-card/product-card";
-import SneakerService from "../../../services/sneaker.service";
 import { Sneaker } from "../../../types/sneaker.type";
 
-export const ProductList: FC = () => {
-    const sneakerService = new SneakerService();
+interface IProps {
+  products: Sneaker[];
+  total: number;
+  gender: string;
+}
 
-    const [sneakers, setSneakers] = useState<Sneaker[]>([]);
+export const ProductList: FC<IProps> = ({ products, total, gender }) => {
 
-    const fetchSneakers = async () => {
-        const result = await sneakerService.findAll('page=1&limit=100');
-        setSneakers(result?.data.data);
-    };
-
-    useEffect(() => {
-        fetchSneakers();
-    }, []);
-
-    return (
-        <div className="flex flex-wrap justify-around items-center">
-            {sneakers ? sneakers.map((sneaker: Sneaker) => <ProductCard key={sneaker.id} data={sneaker} />) : <p>No sneakers found</p>}
+  return (
+    <section className="w-3/4" style={{ margin: "5% 12.5% 0 12.5%" }}>
+      <h1 className="font-semibold text-2xl">{gender}'s Shoes & Sneakers ({total})</h1>
+      {products.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-around items-center">
+          {products.map((sneaker: Sneaker) => (
+            <ProductCard key={sneaker.id} data={sneaker} />
+          ))}
         </div>
-    );
+      ) : (
+        <p>No sneakers found for {gender}.</p>
+      )}
+    </section>
+  );
 };

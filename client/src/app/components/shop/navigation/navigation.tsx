@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const navigation = [
   { name: "Men", href: "/shop/men" },
   { name: "Women", href: "/shop/women" },
-  { name: "Unisex", href: "#" },
+  { name: "Unisex", href: "/shop/unisex" },
 ];
 
 export const Navigation: FC = () => {
