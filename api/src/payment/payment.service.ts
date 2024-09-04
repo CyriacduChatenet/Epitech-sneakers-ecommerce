@@ -20,10 +20,10 @@ export class PaymentService {
     try {
       const session = await this.stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        customer: createCheckoutDto.customer,
+        customer: createCheckoutDto.customer_id,
         line_items: [
           {
-            price: 'price_1Mw4OMFXjkZ2xKS6EgnyEo60',
+            price: createCheckoutDto.price_id,
             quantity: 1,
           },
         ],
@@ -34,6 +34,8 @@ export class PaymentService {
         success_url: `${this.configService.get('CLIENT_APP_URL')}/payment/success`,
         cancel_url: `${this.configService.get('CLIENT_APP_URL')}/payment/cancel`,
       });
+
+      console.log(session);
 
       return session.id;
     } catch (err) {

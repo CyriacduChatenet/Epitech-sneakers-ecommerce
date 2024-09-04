@@ -8,5 +8,8 @@ export class CreateCheckoutDto {
   amount: number;
 
   @IsString()
-  customer: string;
+  customer_id: string;
+
+  @IsString()
+  price_id: string;
 }
