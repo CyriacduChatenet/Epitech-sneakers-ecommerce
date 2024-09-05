@@ -27,7 +27,7 @@ class SneakerService {
 
     async update(id: string, data: any) {
         try {
-            return await API().put(`/sneaker/${id}`, data);
+            return await API().patch(`/sneaker/${id}`, data);
         } catch (err) {
             console.error(err);
         }

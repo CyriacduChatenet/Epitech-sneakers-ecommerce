@@ -55,12 +55,12 @@ export const ShoppingCartCard: FC<ShoppingCart> = ({ quantity, name, thumbnail, 
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
-            <div className="w-40 flex justify-around items-center">
-                <button onClick={() => handleSubstractQuantity(id)}>-</button>
+            <div className="w-48 flex justify-around items-center">
+                <button onClick={() => handleSubstractQuantity(id)} className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-3 py-1.5 text-base font-medium text-white shadow-sm hover:bg-indigo-700">-</button>
                 <p className="text-gray-500">
                 Quantity : {quantity}
                 </p>
-                <button onClick={() => handleAddQuantity(id)}>+</button>
+                <button onClick={() => handleAddQuantity(id)} className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-3 py-1.5 text-base font-medium text-white shadow-sm hover:bg-indigo-700">+</button>
             </div>
 
             <div className="flex">
