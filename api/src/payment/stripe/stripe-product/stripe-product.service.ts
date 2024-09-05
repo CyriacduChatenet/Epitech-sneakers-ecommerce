@@ -37,6 +37,22 @@ export class StripeProductService {
     return await this.stripe.products.retrieve(productId);
   }
 
+  async update(
+    productId: string,
+    stripeCredentials: {
+      name: string;
+      description: string;
+      images: string[];
+      price: number;
+    },
+  ) {
+    return await this.stripe.products.update(productId, {
+      name: stripeCredentials.name,
+      description: stripeCredentials.description,
+      images: stripeCredentials.images,
+    });
+  }
+
   async delete(productId: string) {
     return await this.stripe.products.del(productId);
   }
