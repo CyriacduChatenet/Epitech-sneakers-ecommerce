@@ -4,20 +4,20 @@ import { API } from "../utils/axios.utils";
 class PaymentService {
   stripePromise = loadStripe(`${import.meta.env.VITE_APP_STRIPE_PUBLIC_KEY}`);
 
-  async createCheckoutSession(shoppingCart: any, stripeCustomerId: string) {
+  async createCheckoutSession(shoppingCart: { price_id: string, quantity: number}[], stripeCustomerId: string) {
     try {
-      console.log(shoppingCart);
+      const shoppingCartToStripe = shoppingCart.map((item) => ({
+        price_id: item.price_id,
+        quantity: item.quantity,
+      }))
+
       const data = await API().post(
         `${
           import.meta.env.VITE_APP_API_URL
-        }/payment/checkout/${stripeCustomerId}`,
-        {
-          location: `Bordeaux, Gironde, France`,
-          amount: 10000,
-          price_id: shoppingCart[0].stripe_price_id,
+        }/payment/checkout/${stripeCustomerId}`, {
+          shoppingCart: shoppingCartToStripe,
         }
       );
-      console.log(data);
 
       const stripe = await this.stripePromise;
       if (stripe) {

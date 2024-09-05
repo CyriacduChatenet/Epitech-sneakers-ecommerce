@@ -1,15 +1,12 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
 
 export class CreateCheckoutDto {
   @IsString()
-  currency: string;
-
-  @IsNumber()
-  amount: number;
-
-  @IsString()
   customer_id: string;
 
-  @IsString()
-  price_id: string;
+  @IsArray()
+  shoppingCart: {
+    price_id: string;
+    quantity: number;
+  }[];
 }

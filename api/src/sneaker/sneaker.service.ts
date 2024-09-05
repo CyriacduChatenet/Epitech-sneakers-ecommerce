@@ -24,7 +24,6 @@ export class SneakerService implements OnApplicationBootstrap {
   ) {}
 
   async onApplicationBootstrap() {
-    console.log('Application has bootstrapped');
     await this.checkIfExternalDataAreInDatabase();
   }
 
@@ -69,11 +68,9 @@ export class SneakerService implements OnApplicationBootstrap {
 
       if (totalItemInTable === 0) {
         const response = await this.findAllFromExternalApi();
-        console.log(response.data.data);
         const data = response.data.data;
 
         data.forEach(async (item: any) => {
-          console.log(item);
           const stripeProduct =
             await this.stripeProductService.createStripeProduct({
               name: item.attributes.name,

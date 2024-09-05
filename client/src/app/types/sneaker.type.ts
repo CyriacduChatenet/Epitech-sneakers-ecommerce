@@ -28,4 +28,6 @@ sku: string;
 story: "";
 publishedAt: Date;
 UID: string;
+stripe_price_id: string;
+stripe_product_id: string;
 }

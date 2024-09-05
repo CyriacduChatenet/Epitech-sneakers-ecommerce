@@ -72,7 +72,7 @@ const ShopItem = () => {
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
   const [sneaker, setSneaker] = useState<Sneaker>();
   const { id } = useParams();
-  const { open, setOpen, setShoppingCart } = useShoppingCart();
+  const { setOpen, setShoppingCart } = useShoppingCart();
   const sneakerService = new SneakerService();
 
   const fetchSneaker = async () => {
@@ -83,7 +83,17 @@ const ShopItem = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setOpen(true);
-    setShoppingCart((prev) => [...prev, sneaker]);
+    setShoppingCart((prev: any) => [
+      ...prev,
+      {
+        price_id: sneaker?.stripe_price_id ?? "",
+        quantity: 1,
+        thumbnail: sneaker?.image.thumbnail,
+        name: sneaker?.name ?? "",
+        price: sneaker?.retailPrice ?? "",
+        id: sneaker?.id ?? "",
+      },
+    ]);
   };
 
   useEffect(() => {

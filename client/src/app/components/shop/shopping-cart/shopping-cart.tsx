@@ -10,46 +10,25 @@ import UserService from "../../../services/user.service";
 import useUser from "../../../context/user.context";
 import useShoppingCart from "../../../context/shopping-cart.context";
 import PaymentService from "../../../services/payment.service";
-
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
+import { ShoppingCartCard } from "./shopping-cart-card/shopping-cart-card";
+import { ShoppingCart as ShoppingCartType } from "../../../types/shopping-cart.type";
 
 export const ShoppingCart = () => {
   const paymentService = new PaymentService();
   const { user } = useUser(); 
   const { open, setOpen, shoppingCart } = useShoppingCart();
   const [stripeCustomerId, setStripeCustomerId] = useState("");
+  const [total, setTotal] = useState(0);
 
   const userService = new UserService();
 
   const handlePayed = async () => {
     return await paymentService.createCheckoutSession(shoppingCart, stripeCustomerId);
   };
+
+  const getTotal = () => {
+    setTotal(shoppingCart.reduce((acc, product) => acc + product.price * product.quantity, 0));
+  }
 
   const  fetchUserById = async () => {
     const userInDB = await userService.findOneById(user.id);
@@ -59,6 +38,10 @@ export const ShoppingCart = () => {
   useEffect(() => {
     fetchUserById();
   }, []);
+
+  useEffect(() => {
+    getTotal();
+  }, [shoppingCart]);
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
@@ -99,44 +82,8 @@ export const ShoppingCart = () => {
                         role="list"
                         className="-my-6 divide-y divide-gray-200"
                       >
-                        {products.map((product) => (
-                          <li key={product.id} className="flex py-6">
-                            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                              <img
-                                alt={product.imageAlt}
-                                src={product.imageSrc}
-                                className="h-full w-full object-cover object-center"
-                              />
-                            </div>
-
-                            <div className="ml-4 flex flex-1 flex-col">
-                              <div>
-                                <div className="flex justify-between text-base font-medium text-gray-900">
-                                  <h3>
-                                    <a href={product.href}>{product.name}</a>
-                                  </h3>
-                                  <p className="ml-4">{product.price}</p>
-                                </div>
-                                <p className="mt-1 text-sm text-gray-500">
-                                  {product.color}
-                                </p>
-                              </div>
-                              <div className="flex flex-1 items-end justify-between text-sm">
-                                <p className="text-gray-500">
-                                  Qty {product.quantity}
-                                </p>
-
-                                <div className="flex">
-                                  <button
-                                    type="button"
-                                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                                  >
-                                    Remove
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
+                        {shoppingCart.map((product: ShoppingCartType) => (
+                          <ShoppingCartCard key={product.id} id={product.id} thumbnail={product.thumbnail} price={product.price} price_id={product.price_id} quantity={product.quantity} name={product.name} />
                         ))}
                       </ul>
                     </div>
@@ -146,7 +93,7 @@ export const ShoppingCart = () => {
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Subtotal</p>
-                    <p>$262.00</p>
+                    <p>{total} €</p>
                   </div>
                   <p className="mt-0.5 text-sm text-gray-500">
                     Shipping and taxes calculated at checkout.

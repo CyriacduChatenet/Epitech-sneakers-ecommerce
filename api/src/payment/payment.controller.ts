@@ -3,6 +3,7 @@ import { Body, Controller, Param, Post } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { Roles } from '../decorators/role.decorator';
 import { Role } from '../enums/role.enum';
+import { CreateCheckoutDto } from './dto/create-checkout.dto';
 
 @Controller('payment')
 export class PaymentController {
@@ -12,20 +13,17 @@ export class PaymentController {
   @Roles(Role.User, Role.Admin)
   async createCheckoutSession(
     @Param('customerId') customerId: string,
-    @Body() { amount, price_id }: { amount: number; price_id: string },
+    @Body()
+    {
+      shoppingCart,
+    }: {
+      shoppingCart: { price_id: string; quantity: number }[];
+    },
   ): Promise<any> {
-    const createCheckoutDto: {
-      currency: string;
-      amount: number;
-      customer_id: string;
-      price_id: string;
-    } = {
-      currency: 'eur',
-      amount,
+    const createCheckoutDto: CreateCheckoutDto = {
       customer_id: customerId,
-      price_id: price_id,
+      shoppingCart: shoppingCart,
     };
-    console.log(createCheckoutDto);
     const sessionId =
       await this.paymentService.createCheckoutSession(createCheckoutDto);
     return { sessionId };
