@@ -82,12 +82,14 @@ export class SneakerService implements OnApplicationBootstrap {
             stripeProduct.id,
           );
 
-          await this.create({
+          const newSneaker = await this.create({
             external_id: item.id,
             ...item.attributes,
             stripe_product_id: stripeProduct.id,
             stripe_price_id: stripe_price_id.default_price,
           });
+
+          await this.sneakerRepository.save(newSneaker);
         });
       }
     } catch (err) {
