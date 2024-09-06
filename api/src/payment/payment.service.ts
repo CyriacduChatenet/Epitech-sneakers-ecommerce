@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
 
@@ -17,22 +17,38 @@ export class PaymentService {
   async createCheckoutSession(
     createCheckoutDto: CreateCheckoutDto,
   ): Promise<any> {
-    // try {
-    const session = await this.stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      customer: createCheckoutDto.customer_id,
-      line_items: createCheckoutDto.shoppingCart.map((item) => ({
-        price: item.price_id,
-        quantity: item.quantity,
-      })),
-      mode: 'payment',
-      success_url: `${this.configService.get('CLIENT_APP_URL')}/payment/success`,
-      cancel_url: `${this.configService.get('CLIENT_APP_URL')}/payment/cancel`,
-    });
+    try {
+      const session = await this.stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        customer: createCheckoutDto.customer_id,
+        line_items: createCheckoutDto.shoppingCart.map((item) => ({
+          price: item.price_id,
+          quantity: item.quantity,
+        })),
+        mode: 'payment',
+        success_url: `${this.configService.get('CLIENT_APP_URL')}/payment/success`,
+        cancel_url: `${this.configService.get('CLIENT_APP_URL')}/payment/cancel`,
+      });
 
-    return session.id;
-    // } catch (err) {
-    //   throw new HttpException('Failed to recieve payment', 402);
-    // }
+      return session.id;
+    } catch (err) {
+      throw new HttpException('Failed to recieve payment', 402);
+    }
+  }
+
+  async handleStripeWebhook(signature: string, event: any): Promise<void> {
+    try {
+      if (event.type === 'payment_intent.created') {
+        const session = event.data.object as Stripe.Checkout.Session;
+        // Handle successful payment here
+        console.log('Payment was successful!', session);
+      } else if (event.type === 'charge.updated') {
+        const session = event.data.object as Stripe.Checkout.Session;
+        // Handle async successful payment here
+        console.log('Stocks are updated', session);
+      }
+    } catch (err) {
+      throw new HttpException('Webhook Error', HttpStatus.BAD_REQUEST);
+    }
   }
 }
