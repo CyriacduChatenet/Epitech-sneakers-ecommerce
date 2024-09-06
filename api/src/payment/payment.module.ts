@@ -6,13 +6,12 @@ import { PaymentController } from './payment.controller';
 import { MailModule } from '../mail/mail.module';
 import { CustomerModule } from './customer/customer.module';
 import { StripeModule } from './stripe/stripe.module';
-import { OrderService } from './order/order.service';
 import { WebhoookController } from '../webhoook/webhoook.controller';
 
 @Module({
   imports: [ConfigModule.forRoot(), MailModule, CustomerModule, StripeModule],
   controllers: [PaymentController, WebhoookController],
-  providers: [PaymentService, OrderService],
+  providers: [PaymentService],
   exports: [PaymentService],
 })
 export class PaymentModule {}

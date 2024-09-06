@@ -48,4 +48,17 @@ export class MailService {
       },
     });
   }
+
+  public async sendOrderConfirmationMail(reciever: string) {
+    await this.mailerService.sendMail({
+      to: reciever,
+      from: this.configService.get('MAILER_EMAIL'),
+      subject: 'Order confirmation',
+      template: 'order-confirmation',
+      context: {
+        reciever,
+        url: this.configService.get('CLIENT_APP_URL'),
+      },
+    });
+  }
 }

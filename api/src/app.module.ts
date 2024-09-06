@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import { PaymentModule } from './payment/payment.module';
 import { StockModule } from './stock/stock.module';
+import { PaymentService } from './stripe/stripe-price/payment/payment.service';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { StockModule } from './stock/stock.module';
     StockModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PaymentService],
 })
 export class AppModule {}
