@@ -13,6 +13,8 @@ import { UpdateSneakerDto } from './dto/update-sneaker.dto';
 import { SneakerRepository } from './sneaker.repository';
 import { ApiQuery } from '../types/api.type';
 import { StripeProductService } from '../payment/stripe/stripe-product/stripe-product.service';
+import { SizeService } from './size/size.service';
+import { sizeToCreate } from '../utils/size.util';
 
 @Injectable()
 export class SneakerService implements OnApplicationBootstrap {
@@ -21,6 +23,7 @@ export class SneakerService implements OnApplicationBootstrap {
     private httpService: HttpService,
     private configService: ConfigService,
     private stripeProductService: StripeProductService,
+    private sizeService: SizeService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -61,44 +64,48 @@ export class SneakerService implements OnApplicationBootstrap {
   }
 
   private async checkIfExternalDataAreInDatabase() {
-    // try {
-    // const dataInDatabase = await this.findAll({ page: 1, limit: 10 });
-    // const totalItemInTable = dataInDatabase.total;
+    try {
+      const dataInDatabase = await this.findAll({ page: 1, limit: 10 });
+      const totalItemInTable = dataInDatabase.total;
 
-    // if (totalItemInTable === 0) {
-    const sneakerExternalResponse = await this.findAllFromExternalApi();
-    const sneakersData = sneakerExternalResponse.data.data;
-    sneakersData.forEach(async (item: any) => {
-      const stripeProduct = await this.stripeProductService.createStripeProduct(
-        {
-          name: item.attributes.name,
-          description: 'Sneaker',
-          images: [],
-          price: item.attributes.retailPrice * 100,
-        },
+      if (totalItemInTable === 0) {
+        await this.sizeService.createMany(sizeToCreate);
+        const sizeResponse = await this.sizeService.findAll({
+          page: 1,
+          limit: 10,
+        });
+
+        const sneakerExternalResponse = await this.findAllFromExternalApi();
+        const sneakersData = sneakerExternalResponse.data.data;
+        sneakersData.forEach(async (item: any) => {
+          const stripeProduct =
+            await this.stripeProductService.createStripeProduct({
+              name: item.attributes.name,
+              description: 'Sneaker',
+              images: [],
+              price: item.attributes.retailPrice * 100,
+            });
+
+          const stripe_price_id = await this.stripeProductService.findOne(
+            stripeProduct.id,
+          );
+
+          const newSneaker = await this.create({
+            external_id: item.id,
+            ...item.attributes,
+            stripe_product_id: stripeProduct.id,
+            stripe_price_id: stripe_price_id.default_price,
+            sizes: sizeResponse.data,
+          });
+
+          await this.sneakerRepository.save(newSneaker);
+        });
+      }
+    } catch (err) {
+      throw new NotFoundException(
+        `Data of external sneaker's API are not found`,
       );
-
-      const stripe_price_id = await this.stripeProductService.findOne(
-        stripeProduct.id,
-      );
-
-      const newSneaker = await this.create({
-        external_id: item.id,
-        ...item.attributes,
-        stripe_product_id: stripeProduct.id,
-        stripe_price_id: stripe_price_id.default_price,
-      });
-
-      console.log('newSneaker', newSneaker);
-
-      await this.sneakerRepository.save(newSneaker);
-    });
-    // }
-    // } catch (err) {
-    //   throw new NotFoundException(
-    //     `Data of external sneaker's API are not found`,
-    //   );
-    // }
+    }
   }
 
   async update(id: string, updateSneakerDto: UpdateSneakerDto) {
