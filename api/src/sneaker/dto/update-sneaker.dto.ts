@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 
 import { CreateSneakerDto } from './create-sneaker.dto';
-import { Size } from '../size/entities/size.entity';
+import { Stock } from '../../stock/entities/stock.entity';
 
 export class UpdateSneakerDto extends PartialType(CreateSneakerDto) {
   brand: string;
@@ -27,5 +27,5 @@ export class UpdateSneakerDto extends PartialType(CreateSneakerDto) {
   silhouette: string;
   sku: string;
   story: string;
-  sizes?: Size[];
+  stocks?: Stock[];
 }

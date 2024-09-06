@@ -1,13 +1,7 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 import { Timestamp } from '../../utils/timestamps.util';
-import { Size } from '../size/entities/size.entity';
+import { Stock } from 'src/stock/entities/stock.entity';
 
 @Entity()
 export class Sneaker extends Timestamp {
@@ -78,7 +72,6 @@ export class Sneaker extends Timestamp {
   @Column()
   stripe_price_id: string;
 
-  @ManyToMany(() => Size, (size) => size.sneakers)
-  @JoinTable()
-  sizes: Size[];
+  @OneToMany(() => Stock, (stock) => stock.sneaker)
+  stocks: Stock[];
 }

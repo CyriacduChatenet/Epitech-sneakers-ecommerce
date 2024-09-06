@@ -21,10 +21,9 @@ export class SneakerRepository extends Repository<Sneaker> {
     page = page ? +page : 1;
     limit = limit ? +limit : 10;
 
-    const query = this.createQueryBuilder('sneaker').leftJoinAndSelect(
-      'sneaker.sizes',
-      'size',
-    );
+    const query = this.createQueryBuilder('sneaker')
+      .leftJoinAndSelect('sneaker.stocks', 'stock')
+      .leftJoinAndSelect('stock.size', 'size');
 
     if (sortedBy) {
       query.orderBy('sneaker.createdAt', sortedBy);
@@ -49,7 +48,7 @@ export class SneakerRepository extends Repository<Sneaker> {
 
   async findOneSneakerById(id: string): Promise<Sneaker> {
     return await this.createQueryBuilder('sneaker')
-      .leftJoinAndSelect('sneaker.sizes', 'size')
+      .leftJoinAndSelect('sneaker.stocks', 'stock')
       .where('sneaker.id = :id', { id })
       .getOne();
   }

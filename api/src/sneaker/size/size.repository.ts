@@ -22,7 +22,7 @@ export class SizeRepository extends Repository<Size> {
     limit = limit ? +limit : 10;
 
     const query = this.createQueryBuilder('size')
-      .leftJoinAndSelect('size.sneakers', 'sneaker')
+      .leftJoinAndSelect('size.stocks', 'stock')
       .orderBy('size.size', 'ASC');
 
     if (sortedBy) {
@@ -44,7 +44,7 @@ export class SizeRepository extends Repository<Size> {
 
   async findOneSizeById(id: string): Promise<Size> {
     return await this.createQueryBuilder('size')
-      .leftJoinAndSelect('size.sneakers', 'sneaker')
+      .leftJoinAndSelect('size.stocks', 'stock')
       .where('size.id = :id', { id })
       .getOne();
   }

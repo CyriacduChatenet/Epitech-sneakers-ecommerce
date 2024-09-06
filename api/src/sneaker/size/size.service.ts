@@ -26,7 +26,7 @@ export class SizeService {
       sizes.forEach(async (size) => {
         return await this.sizeRepository.createSize({
           size: size,
-          sneakers: [],
+          stocks: [],
         });
       });
     } catch (err) {

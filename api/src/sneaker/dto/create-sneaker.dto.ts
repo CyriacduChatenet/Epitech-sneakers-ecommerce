@@ -1,4 +1,4 @@
-import { Size } from '../size/entities/size.entity';
+import { Stock } from '../../stock/entities/stock.entity';
 
 export class CreateSneakerDto {
   external_id: number;
@@ -29,5 +29,5 @@ export class CreateSneakerDto {
   UID: string;
   stripe_product_id: string;
   stripe_price_id: string;
-  sizes: Size[];
+  stocks: Stock[];
 }

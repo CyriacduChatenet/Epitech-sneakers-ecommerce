@@ -1,6 +1,6 @@
-import { Sneaker } from '../../../sneaker/entities/sneaker.entity';
+import { Stock } from '../../../stock/entities/stock.entity';
 
 export class UpdateSizeDto {
   size: string;
-  sneakers: Sneaker[];
+  stocks: Stock[];
 }

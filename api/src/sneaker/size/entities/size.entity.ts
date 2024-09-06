@@ -1,7 +1,7 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Timestamp } from '../../../utils/timestamps.util';
-import { Sneaker } from '../../../sneaker/entities/sneaker.entity';
+import { Stock } from 'src/stock/entities/stock.entity';
 
 @Entity()
 export class Size extends Timestamp {
@@ -11,6 +11,6 @@ export class Size extends Timestamp {
   @Column()
   size: string;
 
-  @ManyToMany(() => Sneaker, (sneaker) => sneaker.sizes)
-  sneakers: Sneaker[];
+  @OneToMany(() => Stock, (stock) => stock.size)
+  stocks: Stock[];
 }

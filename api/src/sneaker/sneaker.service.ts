@@ -15,6 +15,8 @@ import { ApiQuery } from '../types/api.type';
 import { StripeProductService } from '../payment/stripe/stripe-product/stripe-product.service';
 import { SizeService } from './size/size.service';
 import { sizeToCreate } from '../utils/size.util';
+import { StockService } from '../stock/stock.service';
+import { Sneaker } from './entities/sneaker.entity';
 
 @Injectable()
 export class SneakerService implements OnApplicationBootstrap {
@@ -24,6 +26,7 @@ export class SneakerService implements OnApplicationBootstrap {
     private configService: ConfigService,
     private stripeProductService: StripeProductService,
     private sizeService: SizeService,
+    private stockService: StockService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -65,19 +68,26 @@ export class SneakerService implements OnApplicationBootstrap {
 
   private async checkIfExternalDataAreInDatabase() {
     try {
-      const dataInDatabase = await this.findAll({ page: 1, limit: 10 });
+      const dataInDatabase = await this.findAll({ page: 1, limit: 100 });
       const totalItemInTable = dataInDatabase.total;
 
       if (totalItemInTable === 0) {
+        // Créez les tailles si elles n'existent pas déjà
         await this.sizeService.createMany(sizeToCreate);
         const sizeResponse = await this.sizeService.findAll({
           page: 1,
-          limit: 10,
+          limit: 100,
         });
 
+        // Récupérez les tailles
+        const sizes = sizeResponse.data;
+
+        // Obtenez les données des sneakers depuis l'API externe
         const sneakerExternalResponse = await this.findAllFromExternalApi();
         const sneakersData = sneakerExternalResponse.data.data;
-        sneakersData.forEach(async (item: any) => {
+
+        for (const item of sneakersData) {
+          // Créez le produit Stripe
           const stripeProduct =
             await this.stripeProductService.createStripeProduct({
               name: item.attributes.name,
@@ -90,16 +100,27 @@ export class SneakerService implements OnApplicationBootstrap {
             stripeProduct.id,
           );
 
+          // Créez un nouveau sneaker
           const newSneaker = await this.create({
             external_id: item.id,
             ...item.attributes,
             stripe_product_id: stripeProduct.id,
             stripe_price_id: stripe_price_id.default_price,
-            sizes: sizeResponse.data,
+            stocks: [], // Initialisez avec un tableau vide pour ajouter des stocks après
           });
 
-          await this.sneakerRepository.save(newSneaker);
-        });
+          // Sauvegardez le sneaker
+          const savedSneaker = await this.sneakerRepository.save(newSneaker);
+
+          // Créez et associez des stocks pour ce sneaker
+          for (const size of sizes) {
+            await this.stockService.create({
+              quantity: 1000,
+              size: size,
+              sneaker: savedSneaker, // Associez le stock au sneaker nouvellement créé
+            });
+          }
+        }
       }
     } catch (err) {
       throw new NotFoundException(
