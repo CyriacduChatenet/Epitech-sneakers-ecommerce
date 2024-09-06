@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
 import { Timestamp } from '../../utils/timestamps.util';
-import { Size } from '../size/entities/Size.entity';
 
 @Entity()
 export class Sneaker extends Timestamp {
@@ -70,7 +70,4 @@ export class Sneaker extends Timestamp {
 
   @Column()
   stripe_price_id: string;
-
-  @OneToMany(() => Size, (size) => size.sneaker, { cascade: true })
-  sizes: Size[];
 }

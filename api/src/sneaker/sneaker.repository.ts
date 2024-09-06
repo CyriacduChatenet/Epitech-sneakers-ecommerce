@@ -12,7 +12,7 @@ export class SneakerRepository extends Repository<Sneaker> {
   }
 
   async createSneaker(createSneakerDto: CreateSneakerDto): Promise<Sneaker> {
-    const sneaker = this.create({ ...createSneakerDto });
+    const sneaker = this.create(createSneakerDto);
     return await this.save(sneaker);
   }
 
@@ -21,10 +21,7 @@ export class SneakerRepository extends Repository<Sneaker> {
     page = page ? +page : 1;
     limit = limit ? +limit : 10;
 
-    const query = this.createQueryBuilder('sneaker').leftJoinAndSelect(
-      'sneaker.sizes',
-      'size',
-    );
+    const query = this.createQueryBuilder('sneaker');
 
     if (sortedBy) {
       query.orderBy('sneaker.createdAt', sortedBy);
@@ -49,7 +46,6 @@ export class SneakerRepository extends Repository<Sneaker> {
 
   async findOneSneakerById(id: string): Promise<Sneaker> {
     return await this.createQueryBuilder('sneaker')
-      .leftJoinAndSelect('sneaker.sizes', 'size')
       .where('sneaker.id = :id', { id })
       .getOne();
   }
