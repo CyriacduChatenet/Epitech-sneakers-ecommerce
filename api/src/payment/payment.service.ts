@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { CreateCheckoutDto } from './dto/create-checkout.dto';
 import { MailService } from '../mail/mail.service';
 import { StripeCustomerService } from './stripe/stripe-customer/stripe-customer.service';
+import { StripeInvoiceService } from './stripe/stripe-invoice/stripe-invoice.service';
 
 @Injectable()
 export class PaymentService {
@@ -13,7 +14,8 @@ export class PaymentService {
   constructor(
     private configService: ConfigService,
     private mailService: MailService,
-    private stripeCustomer: StripeCustomerService,
+    private stripeCustomerService: StripeCustomerService,
+    private stripeInvoiceService: StripeInvoiceService,
   ) {
     this.stripe = new Stripe(configService.get<string>('STRIPE_API_KEY'), {
       apiVersion: '2024-06-20',
@@ -34,6 +36,7 @@ export class PaymentService {
         mode: 'payment',
         success_url: `${this.configService.get('CLIENT_APP_URL')}/payment/success`,
         cancel_url: `${this.configService.get('CLIENT_APP_URL')}/payment/cancel`,
+        invoice_creation: { enabled: true },
       });
 
       return session.id;
@@ -51,16 +54,34 @@ export class PaymentService {
       if (event.type === 'payment_intent.created') {
         const session = event.data.object as Stripe.Checkout.Session;
         // Handle successful payment here
-        stripeCustomer = await this.stripeCustomer.findOne(
+        stripeCustomer = await this.stripeCustomerService.findOne(
           session.customer as string,
         );
 
         console.log(event.data.object);
+      } else if (event.type === 'invoice.payment_succeeded') {
+        console.log(event.data.object);
+        const invoice = event.data.object;
+        const invoice_pdf_url = invoice.invoice_pdf;
+
+        if (!stripeCustomer) {
+          stripeCustomer = await this.stripeCustomerService.findOne(
+            invoice.customer as string,
+          );
+        }
+
+        const invoiceBuffer =
+          await this.stripeInvoiceService.download(invoice_pdf_url);
 
         if (stripeCustomer && 'email' in stripeCustomer) {
-          await this.mailService.sendOrderConfirmationMail(
-            stripeCustomer.email,
-          );
+          try {
+            await this.mailService.sendOrderConfirmationMail(
+              stripeCustomer.email,
+              invoiceBuffer,
+            );
+          } catch (error) {
+            throw new HttpException(`Failed to send email : ${error}`, 403);
+          }
         }
       }
     } catch (err) {

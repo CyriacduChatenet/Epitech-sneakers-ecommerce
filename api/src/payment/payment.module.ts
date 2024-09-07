@@ -8,7 +8,6 @@ import { CustomerModule } from './customer/customer.module';
 import { StripeModule } from './stripe/stripe.module';
 import { WebhoookController } from '../webhoook/webhoook.controller';
 import { StockModule } from '../stock/stock.module';
-import { PdfModule } from '../pdf/pdf.module';
 
 @Module({
   imports: [
@@ -17,7 +16,6 @@ import { PdfModule } from '../pdf/pdf.module';
     CustomerModule,
     StripeModule,
     StockModule,
-    PdfModule,
   ],
   controllers: [PaymentController, WebhoookController],
   providers: [PaymentService],

@@ -10,7 +10,6 @@ import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import { PaymentModule } from './payment/payment.module';
 import { StockModule } from './stock/stock.module';
-import { PdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -33,7 +32,6 @@ import { PdfModule } from './pdf/pdf.module';
     MailModule,
     PaymentModule,
     StockModule,
-    PdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

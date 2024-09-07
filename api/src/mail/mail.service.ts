@@ -49,7 +49,7 @@ export class MailService {
     });
   }
 
-  public async sendOrderConfirmationMail(reciever: string) {
+  public async sendOrderConfirmationMail(reciever: string, invoice: Buffer) {
     await this.mailerService.sendMail({
       to: reciever,
       from: this.configService.get('MAILER_EMAIL'),
@@ -59,6 +59,13 @@ export class MailService {
         reciever,
         url: this.configService.get('CLIENT_APP_URL'),
       },
+      attachments: [
+        {
+          filename: 'invoice.pdf',
+          content: invoice.toString('base64'), // Convertir le Buffer en base64
+          encoding: 'base64',
+        },
+      ],
     });
   }
 }
