@@ -6,6 +6,9 @@ import { CreateCheckoutDto } from './dto/create-checkout.dto';
 import { MailService } from '../mail/mail.service';
 import { StripeCustomerService } from './stripe/stripe-customer/stripe-customer.service';
 import { StripeInvoiceService } from './stripe/stripe-invoice/stripe-invoice.service';
+import { StripeCheckoutService } from './stripe/stripe-checkout/stripe-checkout.service';
+import { SneakerService } from '../sneaker/sneaker.service';
+import { StockService } from '../stock/stock.service';
 
 @Injectable()
 export class PaymentService {
@@ -14,8 +17,11 @@ export class PaymentService {
   constructor(
     private configService: ConfigService,
     private mailService: MailService,
+    private sneakerService: SneakerService,
+    private stockService: StockService,
     private stripeCustomerService: StripeCustomerService,
     private stripeInvoiceService: StripeInvoiceService,
+    private stripeCheckoutService: StripeCheckoutService,
   ) {
     this.stripe = new Stripe(configService.get<string>('STRIPE_API_KEY'), {
       apiVersion: '2024-06-20',
@@ -57,10 +63,7 @@ export class PaymentService {
         stripeCustomer = await this.stripeCustomerService.findOne(
           session.customer as string,
         );
-
-        console.log(event.data.object);
       } else if (event.type === 'invoice.payment_succeeded') {
-        console.log(event.data.object);
         const invoice = event.data.object;
         const invoice_pdf_url = invoice.invoice_pdf;
 
@@ -83,6 +86,26 @@ export class PaymentService {
             throw new HttpException(`Failed to send email : ${error}`, 403);
           }
         }
+      } else if (event.type === 'checkout.session.completed') {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const lineItems = await this.stripeCheckoutService.listItems(
+          session.id,
+        );
+
+        // Update stock quantity
+        lineItems.data.forEach(async (product) => {
+          const product_name = product.description;
+          const sneaker = await this.sneakerService.findOneByName(product_name);
+          const stock_id = sneaker.stocks[0].id;
+          await this.stockService.update(stock_id, {
+            quantity: sneaker.stocks[0].quantity - product.quantity,
+            sneaker: sneaker.stocks[0].sneaker,
+            size: sneaker.stocks[0].size,
+          });
+        });
+
+        console.log('List of items in the checkout session', lineItems);
+        console.log('Checkout session completed', session);
       }
     } catch (err) {
       throw new HttpException('Webhook Error', HttpStatus.BAD_REQUEST);

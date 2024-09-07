@@ -16,7 +16,6 @@ import { StripeProductService } from '../payment/stripe/stripe-product/stripe-pr
 import { SizeService } from './size/size.service';
 import { sizeToCreate } from '../utils/size.util';
 import { StockService } from '../stock/stock.service';
-import { Sneaker } from './entities/sneaker.entity';
 
 @Injectable()
 export class SneakerService implements OnApplicationBootstrap {
@@ -51,6 +50,14 @@ export class SneakerService implements OnApplicationBootstrap {
   async findOneById(id: string) {
     try {
       return await this.sneakerRepository.findOneSneakerById(id);
+    } catch (err) {
+      throw new NotFoundException(err);
+    }
+  }
+
+  async findOneByName(name: string) {
+    try {
+      return await this.sneakerRepository.findOneSneakerByName(name);
     } catch (err) {
       throw new NotFoundException(err);
     }

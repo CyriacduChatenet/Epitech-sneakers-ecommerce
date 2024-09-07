@@ -53,6 +53,13 @@ export class SneakerRepository extends Repository<Sneaker> {
       .getOne();
   }
 
+  async findOneSneakerByName(name: string): Promise<Sneaker> {
+    return await this.createQueryBuilder('sneaker')
+      .leftJoinAndSelect('sneaker.stocks', 'stock')
+      .where('sneaker.name = :name', { name })
+      .getOne();
+  }
+
   async updateSneaker(
     id: string,
     updateSneakerDto: UpdateSneakerDto | unknown,
