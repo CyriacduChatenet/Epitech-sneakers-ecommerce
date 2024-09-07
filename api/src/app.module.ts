@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import { PaymentModule } from './payment/payment.module';
 import { StockModule } from './stock/stock.module';
-import { PaymentService } from './stripe/stripe-price/payment/payment.service';
+import { PdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -33,8 +33,9 @@ import { PaymentService } from './stripe/stripe-price/payment/payment.service';
     MailModule,
     PaymentModule,
     StockModule,
+    PdfModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PaymentService],
+  providers: [AppService],
 })
 export class AppModule {}
