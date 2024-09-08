@@ -1,19 +1,25 @@
 import { FC, useState } from "react";
-import { Dialog, DialogPanel } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from "react-router-dom";
-
-const navigation = [
-  { name: "Men", href: "/shop/men" },
-  { name: "Women", href: "/shop/women" },
-  { name: "Unisex", href: "/shop/unisex" },
-];
+import { Dialog, DialogPanel } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link, useLocation } from "react-router-dom";
 
 export const Navigation: FC = () => {
+  const navigation = [
+    { name: "Men", href: "/shop/men" },
+    { name: "Women", href: "/shop/women" },
+    { name: "Unisex", href: "/shop/unisex" },
+  ];
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const pathname = location.pathname;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-20">
+    <header
+      className={`fixed inset-x-0 top-0 z-20 ${
+        pathname !== "/" ? "bg-white" : "bg-transparent"
+      }`}
+    >
       <nav
         aria-label="Global"
         className="flex items-center justify-between p-6 lg:px-8"
@@ -43,14 +49,17 @@ export const Navigation: FC = () => {
             <Link
               key={item.name}
               to={item.href}
-              className="text-sm font-semibold leading-6 text-gray-900"
+              className={`text-sm font-semibold leading-6 text-gray-900`}
             >
               {item.name}
             </Link>
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link to="/signin" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link
+            to="/signin"
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
             Sign in <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
