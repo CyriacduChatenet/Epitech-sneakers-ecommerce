@@ -19,7 +19,6 @@ export class WebhoookController {
     @Headers('stripe-signature') signature: string,
     @Body() rawBody: string,
   ): Promise<void> {
-    console.log('Webhook received');
     await this.paymentService.handleStripeWebhook(signature, rawBody);
   }
 }

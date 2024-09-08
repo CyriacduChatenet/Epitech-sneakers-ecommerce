@@ -103,9 +103,6 @@ export class PaymentService {
             size: sneaker.stocks[0].size,
           });
         });
-
-        console.log('List of items in the checkout session', lineItems);
-        console.log('Checkout session completed', session);
       }
     } catch (err) {
       throw new HttpException('Webhook Error', HttpStatus.BAD_REQUEST);
