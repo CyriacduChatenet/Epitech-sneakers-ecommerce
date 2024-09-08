@@ -10,7 +10,7 @@ import { ShoppingCart } from "../../components/shop/shopping-cart/shopping-cart"
 import useShoppingCart from "../../context/shopping-cart.context";
 import { Stock } from "../../types/stock.type";
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -76,12 +76,13 @@ const ShopItem = () => {
   // };
   const reviews = { href: "#", average: 4, totalCount: 117 };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchSneaker = async () => {
     const response = await sneakerService.findOneById(`${id}`);
     setSneaker(response?.data);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     setOpen(true);
     setShoppingCart((prev: any) => [
@@ -100,7 +101,7 @@ const ShopItem = () => {
 
   useEffect(() => {
     fetchSneaker();
-  }, []);
+  }, [fetchSneaker]);
 
   return (
     <ShopLayout>
