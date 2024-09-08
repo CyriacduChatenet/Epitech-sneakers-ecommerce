@@ -49,6 +49,7 @@ export class SneakerRepository extends Repository<Sneaker> {
   async findOneSneakerById(id: string): Promise<Sneaker> {
     return await this.createQueryBuilder('sneaker')
       .leftJoinAndSelect('sneaker.stocks', 'stock')
+      .leftJoinAndSelect('stock.size', 'size')
       .where('sneaker.id = :id', { id })
       .getOne();
   }
@@ -56,6 +57,7 @@ export class SneakerRepository extends Repository<Sneaker> {
   async findOneSneakerByName(name: string): Promise<Sneaker> {
     return await this.createQueryBuilder('sneaker')
       .leftJoinAndSelect('sneaker.stocks', 'stock')
+      .leftJoinAndSelect('stock.size', 'size')
       .where('sneaker.name = :name', { name })
       .getOne();
   }

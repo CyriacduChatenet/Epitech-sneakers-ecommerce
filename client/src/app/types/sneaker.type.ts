@@ -1,3 +1,5 @@
+import { Stock } from "./stock.type";
+
 export type Sneaker = {
 createdAt: Date;
 updatedAt: Date;
@@ -30,4 +32,5 @@ publishedAt: Date;
 UID: string;
 stripe_price_id: string;
 stripe_product_id: string;
+stocks: Stock[]
 }

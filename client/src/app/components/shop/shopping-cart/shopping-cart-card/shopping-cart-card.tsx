@@ -3,7 +3,7 @@ import { ShoppingCart } from "../../../../types/shopping-cart.type"
 import { Link } from "react-router-dom"
 import useShoppingCart from "../../../../context/shopping-cart.context";
 
-export const ShoppingCartCard: FC<ShoppingCart> = ({ quantity, name, thumbnail, price, price_id, id }) => {
+export const ShoppingCartCard: FC<ShoppingCart> = ({ quantity, name, thumbnail, price, price_id, id, size }) => {
     const { shoppingCart, setShoppingCart } = useShoppingCart();
 
     const handleRemove = (id: string) => {
@@ -49,7 +49,7 @@ export const ShoppingCartCard: FC<ShoppingCart> = ({ quantity, name, thumbnail, 
           <div>
             <div className="flex justify-between text-base font-medium text-gray-900">
               <h3>
-                <Link to={`/shop/product/${id}`}>{name}</Link>
+                <Link to={`/shop/product/${id}`}>{name} - {size}</Link>
               </h3>
               <p className="ml-4">{price} €</p>
             </div>

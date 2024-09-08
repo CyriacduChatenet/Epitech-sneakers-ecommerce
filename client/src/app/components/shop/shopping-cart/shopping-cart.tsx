@@ -83,7 +83,7 @@ export const ShoppingCart = () => {
                         className="-my-6 divide-y divide-gray-200"
                       >
                         {shoppingCart.map((product: ShoppingCartType) => (
-                          <ShoppingCartCard key={product.id} id={product.id} thumbnail={product.thumbnail} price={product.price} price_id={product.price_id} quantity={product.quantity} name={product.name} />
+                          <ShoppingCartCard key={product.id} id={product.id} thumbnail={product.thumbnail} price={product.price} price_id={product.price_id} quantity={product.quantity} name={product.name} size={product.size} />
                         ))}
                       </ul>
                     </div>
