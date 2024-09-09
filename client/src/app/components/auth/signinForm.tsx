@@ -10,7 +10,7 @@ import useAuth from "../../context/auth.context";
 
 export const SigninForm: FC = () => {
   const authService = new AuthService();
-  const { setUser } = useUser();
+  const { setUser, user } = useUser();
   const { setAuth } = useAuth();
   const {
     register,
@@ -18,7 +18,6 @@ export const SigninForm: FC = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const pathname = window.location.pathname;
 
   const onSubmit = async (data) => {
     const isAuth = await authService.signin(data);
@@ -40,9 +39,9 @@ export const SigninForm: FC = () => {
           roles: decodedToken.roles,
         });
 
-        if (decodedToken.roles === Role.Admin) {
+        if(decodedToken.roles === Role.Admin) {
           navigate("/admin/dashboard");
-        } else if(pathname === "/signin") {
+        } else {
           navigate("/dashboard");
         }
       }
