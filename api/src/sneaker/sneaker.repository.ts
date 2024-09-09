@@ -26,11 +26,9 @@ export class SneakerRepository extends Repository<Sneaker> {
       .leftJoinAndSelect('stock.size', 'size');
 
     if (sortedBy) {
-      query
-        .orderBy('sneaker.createdAt', sortedBy)
-        .addOrderBy('size.size', 'ASC');
+      query.orderBy('sneaker.createdAt', sortedBy);
     } else {
-      query.orderBy('sneaker.createdAt', 'DESC').addOrderBy('size.size', 'ASC');
+      query.orderBy('sneaker.createdAt', 'DESC');
     }
 
     if (gender) {
@@ -53,6 +51,7 @@ export class SneakerRepository extends Repository<Sneaker> {
       .leftJoinAndSelect('sneaker.stocks', 'stock')
       .leftJoinAndSelect('stock.size', 'size')
       .where('sneaker.id = :id', { id })
+      .addOrderBy('size.size', 'ASC')
       .getOne();
   }
 
@@ -61,6 +60,7 @@ export class SneakerRepository extends Repository<Sneaker> {
       .leftJoinAndSelect('sneaker.stocks', 'stock')
       .leftJoinAndSelect('stock.size', 'size')
       .where('sneaker.name = :name', { name })
+      .addOrderBy('size.size', 'ASC')
       .getOne();
   }
 
