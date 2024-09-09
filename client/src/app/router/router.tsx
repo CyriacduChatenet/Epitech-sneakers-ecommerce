@@ -11,6 +11,8 @@ import PrivateRoute from "./private.route";
 import CookiesPolicyPage from "../pages/policies/cookies/cookies";
 import ShopPage from "../pages/shop/shop";
 import ShopItemPage from "../pages/shop/shop-item";
+import ForgotPasswordPage from "../pages/auth/forgot-password";
+import ResetPasswordPage from "../pages/auth/reset-password";
 
 const AppRouter: FC = () => {
   return (
@@ -23,6 +25,8 @@ const AppRouter: FC = () => {
 
           <Route path="/signin" element={<SigninPage/>}/>
           <Route path="/signup" element={<SignupPage/>}/>
+          <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
+          <Route path="/reset-password/:token" element={<ResetPasswordPage/>}/>
 
           <Route path="/policy/cookies" element={<CookiesPolicyPage/>}/>
 

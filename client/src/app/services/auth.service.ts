@@ -18,7 +18,7 @@ class AuthService {
 
     async signup(credentials: { email: string, username: string, password: string }) {
         try {
-            await API().post('/auth/signup', credentials);
+            return await API().post('/auth/signup', credentials);
         } catch (err) {
             console.error(err);
         }
@@ -26,7 +26,7 @@ class AuthService {
 
     signout() {
         try {
-            window.localStorage.removeItem('access_token');
+            return window.localStorage.removeItem('access_token');
         } catch (err) {
             console.error(err);
         }
@@ -35,7 +35,22 @@ class AuthService {
     isAuthenticated() {
         return localStorage.getItem('authToken') !== null;
       };
-      
+
+    async forgotPassword(email: string) {
+        try {
+            return await API().post('/auth/forgot-password', email);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async resetPassword(password: string, token: string) {
+        try {
+            return await API().post(`/auth/reset-password/${token}`, password);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }
 
 export default AuthService;

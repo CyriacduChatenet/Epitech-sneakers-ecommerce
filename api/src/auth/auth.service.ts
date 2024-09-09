@@ -131,10 +131,12 @@ export class AuthService {
     resetToken: string,
     resetPasswordDto: ResetPasswordDTO,
   ) {
+    console.log(resetToken);
+    console.log(resetPasswordDto);
     try {
-      const token = await this.resetPasswordTokenService.findOneByToken(
-        resetToken.slice(0, -1),
-      );
+      const token =
+        await this.resetPasswordTokenService.findOneByToken(resetToken);
+
       const user = await this.userService.findOneByEmail(token.user.email);
       const userUpdated = await this.userService.update(user.id, {
         ...user,
