@@ -16,16 +16,29 @@ const ShopPage: FC = () => {
   const { gender } = useParams();
 
   const fetchSneakers = async () => {
-    const result = await sneakerService.findAll(
-      `page=${page}&limit=100&gender=${gender}`
-    );
-    setProducts(result?.data.data);
-    setTotal(result?.data.total);
+    try {
+      const result = await sneakerService.findAll(
+        `page=${page}&limit=100&gender=${gender}`
+      );
+      console.log("API Response:", result);
+
+      if (result && result.data && Array.isArray(result.data.data)) {
+        const data = result.data.data;
+
+        console.log("Transformed data:", data);
+        setProducts(data);
+        setTotal(result.data.total);
+      } else {
+        console.error("Structure de la réponse de l'API inattendue :", result);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des sneakers :", error);
+    }
   };
 
   useEffect(() => {
     fetchSneakers();
-  }, [gender, page]);
+  }, []);
 
   return (
     <ShopLayout>

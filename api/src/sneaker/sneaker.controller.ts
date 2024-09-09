@@ -35,8 +35,13 @@ export class SneakerController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOneById(@Param('id') id: string) {
     return this.sneakerService.findOneById(id);
+  }
+
+  @Get('/name/:name')
+  findOne(@Param('name') name: string) {
+    return this.sneakerService.findOneByName(name);
   }
 
   @Patch(':id')

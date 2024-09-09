@@ -8,7 +8,7 @@ export class Sneaker extends Timestamp {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ nullable: true })
   external_id: number;
 
   @Column({ nullable: true })

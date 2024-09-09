@@ -90,11 +90,20 @@ const ShopItem = () => {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    
+
     if (user.email.length === 0) {
       setAddToCart(true);
     } else {
       setOpen(true);
+      console.log({
+        price_id: sneaker?.stripe_price_id ?? "",
+        quantity: 1,
+        thumbnail: sneaker?.image.thumbnail,
+        name: sneaker?.name ?? "",
+        price: sneaker?.retailPrice ?? "",
+        id: sneaker?.id ?? "",
+        size: selectedSize,
+      });
       setShoppingCart((prev: any) => [
         ...prev,
         {
@@ -112,7 +121,7 @@ const ShopItem = () => {
 
   useEffect(() => {
     fetchSneaker();
-  }, [fetchSneaker]);
+  }, []);
 
   return (
     <ShopLayout>
