@@ -131,8 +131,6 @@ export class AuthService {
     resetToken: string,
     resetPasswordDto: ResetPasswordDTO,
   ) {
-    console.log(resetToken);
-    console.log(resetPasswordDto);
     try {
       const token =
         await this.resetPasswordTokenService.findOneByToken(resetToken);
