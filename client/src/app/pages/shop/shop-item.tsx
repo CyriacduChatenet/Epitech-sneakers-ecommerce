@@ -9,6 +9,8 @@ import SneakerService from "../../services/sneaker.service";
 import { ShoppingCart } from "../../components/shop/shopping-cart/shopping-cart";
 import useShoppingCart from "../../context/shopping-cart.context";
 import { Stock } from "../../types/stock.type";
+import Modal from "../../components/common/modal/modal";
+import useUser from "../../context/user.context";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -17,10 +19,14 @@ function classNames(...classes: string[]) {
 const ShopItem = () => {
   const [sneaker, setSneaker] = useState<Sneaker>();
   // const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState<Stock>(sneaker?.stocks[0] || {} as Stock);
+  const [selectedSize, setSelectedSize] = useState<Stock>(
+    sneaker?.stocks[0] || ({} as Stock)
+  );
   const { id } = useParams();
   const { setOpen, setShoppingCart } = useShoppingCart();
   const sneakerService = new SneakerService();
+  const { user } = useUser();
+  const [addToCart, setAddToCart] = useState(false);
 
   // const product = {
   //   name: "Basic Tee 6-Pack",
@@ -82,21 +88,26 @@ const ShopItem = () => {
     setSneaker(response?.data);
   };
 
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
+  const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    setOpen(true);
-    setShoppingCart((prev: any) => [
-      ...prev,
-      {
-        price_id: sneaker?.stripe_price_id ?? "",
-        quantity: 1,
-        thumbnail: sneaker?.image.thumbnail,
-        name: sneaker?.name ?? "",
-        price: sneaker?.retailPrice ?? "",
-        id: sneaker?.id ?? "",
-        size: selectedSize,
-      },
-    ]);
+    
+    if (user.email.length === 0) {
+      setAddToCart(true);
+    } else {
+      setOpen(true);
+      setShoppingCart((prev: any) => [
+        ...prev,
+        {
+          price_id: sneaker?.stripe_price_id ?? "",
+          quantity: 1,
+          thumbnail: sneaker?.image.thumbnail,
+          name: sneaker?.name ?? "",
+          price: sneaker?.retailPrice ?? "",
+          id: sneaker?.id ?? "",
+          size: selectedSize,
+        },
+      ]);
+    }
   };
 
   useEffect(() => {
@@ -375,6 +386,7 @@ const ShopItem = () => {
         </div>
       </div>
       <ShoppingCart />
+      {user.email.length === 0 && addToCart && <Modal />}
     </ShopLayout>
   );
 };

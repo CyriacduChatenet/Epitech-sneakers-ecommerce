@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
+import { Link, useNavigate } from "react-router-dom";
 
 import AuthService from "../../services/auth.service";
 import useUser from "../../context/user.context";
-import { Link, useNavigate } from "react-router-dom";
 import { Role } from "../../enums/role.enum";
 import useAuth from "../../context/auth.context";
 
@@ -18,6 +18,7 @@ export const SigninForm: FC = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const pathname = window.location.pathname;
 
   const onSubmit = async (data) => {
     const isAuth = await authService.signin(data);
@@ -41,7 +42,7 @@ export const SigninForm: FC = () => {
 
         if (decodedToken.roles === Role.Admin) {
           navigate("/admin/dashboard");
-        } else {
+        } else if(pathname === "/signin") {
           navigate("/dashboard");
         }
       }
