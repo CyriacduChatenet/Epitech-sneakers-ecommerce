@@ -62,7 +62,7 @@ export const Navigation: FC = () => {
             <Link
               key={item.name}
               to={item.href}
-              className={`text-sm font-semibold leading-6 text-gray-900`}
+              className={`text-sm font-semibold leading-6 text-gray-900 ${pathname === item.href ? "border-indigo-600 border-b-2" : ""}`}
             >
               {item.name}
             </Link>
