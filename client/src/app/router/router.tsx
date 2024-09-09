@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import HomePage from "../pages/home/home";
@@ -13,8 +13,24 @@ import ShopPage from "../pages/shop/shop";
 import ShopItemPage from "../pages/shop/shop-item";
 import ForgotPasswordPage from "../pages/auth/forgot-password";
 import ResetPasswordPage from "../pages/auth/reset-password";
+import AuthService from "../services/auth.service";
+import useUser from "../context/user.context";
 
 const AppRouter: FC = () => {
+  const authService = new AuthService();
+  const { setUser } = useUser();
+  
+  const handleIsAuthenticated = async () => {
+    const response = await authService.isAuthenticated();
+    if(response && response.data) {
+      setUser(response.data);
+    }
+  };
+
+  useEffect(() => {
+    handleIsAuthenticated();
+  }, []);
+
   return (
     <Router>
         <Routes>

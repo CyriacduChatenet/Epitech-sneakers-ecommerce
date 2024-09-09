@@ -8,6 +8,14 @@ class UserService {
             console.error(err);
         }
     }
+
+    findOneByEmail(email: string) {
+        try {
+            return API().get(`/user/${email}`);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }
 
 export default UserService;
