@@ -42,7 +42,7 @@ export const SigninForm: FC = () => {
         if(decodedToken.roles === Role.Admin) {
           navigate("/admin/dashboard");
         } else {
-          navigate("/dashboard");
+          navigate("/");
         }
       }
     }

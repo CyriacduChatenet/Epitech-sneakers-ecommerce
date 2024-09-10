@@ -5,7 +5,6 @@ import HomePage from "../pages/home/home";
 import SigninPage from "../pages/auth/signin";
 import SignupPage from "../pages/auth/signup";
 import Page404 from "../pages/errors/404";
-import Dashboard from "../pages/user/dashboard/dashboard";
 import AdminDashboard from "../pages/admin/dashboard/dashboard";
 import PrivateRoute from "./private.route";
 import CookiesPolicyPage from "../pages/policies/cookies/cookies";
@@ -46,7 +45,6 @@ const AppRouter: FC = () => {
 
           <Route path="/policy/cookies" element={<CookiesPolicyPage/>}/>
 
-          <Route path="/dashboard" element={<PrivateRoute Component={Dashboard} />} />
           <Route path="/admin/dashboard" element={<PrivateRoute Component={AdminDashboard} />} />
 
           <Route path="*" element={<Page404 />}/>
