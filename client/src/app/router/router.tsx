@@ -37,7 +37,7 @@ const AppRouter: FC = () => {
           <Route path="/" element={<HomePage />} />
 
           <Route path="/shop/:gender" element={<ShopPage />} />
-          <Route path="/shop/product/:id" element={<ShopItemPage />} />
+          <Route path="/shop/:category/product/:name" element={<ShopItemPage />} />
 
           <Route path="/signin" element={<SigninPage/>}/>
           <Route path="/signup" element={<SignupPage/>}/>

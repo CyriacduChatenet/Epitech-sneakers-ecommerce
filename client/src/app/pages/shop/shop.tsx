@@ -14,6 +14,7 @@ const ShopPage: FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const { gender } = useParams();
+  const pathname = window.location.pathname;
 
   const fetchSneakers = async () => {
     try {
@@ -23,10 +24,7 @@ const ShopPage: FC = () => {
       console.log("API Response:", result);
 
       if (result && result.data && Array.isArray(result.data.data)) {
-        const data = result.data.data;
-
-        console.log("Transformed data:", data);
-        setProducts(data);
+        setProducts(result.data.data);
         setTotal(result.data.total);
       } else {
         console.error("Structure de la réponse de l'API inattendue :", result);
@@ -38,7 +36,7 @@ const ShopPage: FC = () => {
 
   useEffect(() => {
     fetchSneakers();
-  }, []);
+  }, [pathname]);
 
   return (
     <ShopLayout>

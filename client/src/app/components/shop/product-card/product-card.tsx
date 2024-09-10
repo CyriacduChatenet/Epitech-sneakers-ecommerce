@@ -9,7 +9,7 @@ interface IProps {
 
 export const ProductCard: FC<IProps> = ({ data }) => {
   return (
-    <Link to={`/shop/product/${data.id}`}>
+    <Link to={`/shop/${data.gender}/product/${data.id}`}>
       <div>
         <img src={data.image.thumbnail} alt="" />
         <strong>{data.name}</strong>

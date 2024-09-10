@@ -16,6 +16,7 @@ import { StripeProductService } from '../payment/stripe/stripe-product/stripe-pr
 import { SizeService } from './size/size.service';
 import { sizeToCreate } from '../utils/size.util';
 import { StockService } from '../stock/stock.service';
+import { Sneaker } from './entities/sneaker.entity';
 
 @Injectable()
 export class SneakerService implements OnApplicationBootstrap {
@@ -41,7 +42,22 @@ export class SneakerService implements OnApplicationBootstrap {
   }
   async findAll(queries: ApiQuery) {
     // try {
-    return await this.sneakerRepository.findAllSneakers(queries);
+    const data = await this.sneakerRepository.findAllSneakers(queries);
+    let sneakers = [];
+    const uniqueSneakers: { [key: string]: Sneaker } = {};
+
+    data.data.map((sneaker: Sneaker) => {
+      const arrName = sneaker.name.split(' ').slice(0, -3).join(' ');
+
+      if (!uniqueSneakers[arrName]) {
+        uniqueSneakers[arrName] = {
+          ...sneaker,
+          name: arrName,
+        };
+        sneakers.push(uniqueSneakers[arrName]);
+      }
+    });
+    return { ...data, data: sneakers, total: sneakers.length };
     // } catch (err) {
     //   throw new NotFoundException(err);
     // }
@@ -72,69 +88,6 @@ export class SneakerService implements OnApplicationBootstrap {
 
     return response;
   }
-
-  // private async checkIfExternalDataAreInDatabase() {
-  //   // try {
-  //   const dataInDatabase = await this.findAll({ page: 1, limit: 100 });
-  //   const totalItemInTable = dataInDatabase.total;
-
-  //   if (totalItemInTable === 0) {
-  //     // Créez les tailles si elles n'existent pas déjà
-  //     await this.sizeService.createMany(sizeToCreate);
-  //     const sizeResponse = await this.sizeService.findAll({
-  //       page: 1,
-  //       limit: 100,
-  //     });
-
-  //     // Récupérez les tailles
-  //     const sizes = sizeResponse.data;
-
-  //     // Obtenez les données des sneakers depuis l'API externe
-  //     const sneakerExternalResponse = await this.findAllFromExternalApi();
-  //     const sneakersData = sneakerExternalResponse.data.data;
-
-  //     for (const item of sneakersData) {
-  //       // Créez le produit Stripe
-  //       const stripeProduct =
-  //         await this.stripeProductService.createStripeProduct({
-  //           name: `${item.attributes.name}`,
-  //           description: 'Sneaker',
-  //           images: [],
-  //           price: item.attributes.retailPrice * 100,
-  //         });
-
-  //       const stripe_price_id = await this.stripeProductService.findOne(
-  //         stripeProduct.id,
-  //       );
-
-  //       // Créez un nouveau sneaker
-  //       const newSneaker = await this.create({
-  //         external_id: item.id,
-  //         ...item.attributes,
-  //         stripe_product_id: stripeProduct.id,
-  //         stripe_price_id: stripe_price_id.default_price,
-  //         stocks: [], // Initialisez avec un tableau vide pour ajouter des stocks après
-  //       });
-
-  //       // Sauvegardez le sneaker
-  //       const savedSneaker = await this.sneakerRepository.save(newSneaker);
-
-  //       // Créez et associez des stocks pour ce sneaker
-  //       for (const size of sizes) {
-  //         await this.stockService.create({
-  //           quantity: 1000,
-  //           size: size,
-  //           sneaker: savedSneaker, // Associez le stock au sneaker nouvellement créé
-  //         });
-  //       }
-  //     }
-  //   }
-  //   // } catch (err) {
-  //   //   throw new NotFoundException(
-  //   //     `Data of external sneaker's API are not found`,
-  //   //   );
-  //   // }
-  // }
 
   private async checkIfExternalDataAreInDatabase() {
     // try {
