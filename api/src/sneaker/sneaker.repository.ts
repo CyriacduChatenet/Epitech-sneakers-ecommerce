@@ -59,9 +59,50 @@ export class SneakerRepository extends Repository<Sneaker> {
     return await this.createQueryBuilder('sneaker')
       .leftJoinAndSelect('sneaker.stocks', 'stock')
       .leftJoinAndSelect('stock.size', 'size')
-      .where('sneaker.name = :name', { name })
+      .where('sneaker.name LIKE :name', { name: `%${name}%` })
       .addOrderBy('size.size', 'ASC')
       .getOne();
+  }
+
+  async findOneSneakerByStockId(stockId: string): Promise<Sneaker> {
+    return await this.createQueryBuilder('sneaker')
+      .leftJoinAndSelect('sneaker.stocks', 'stock')
+      .leftJoinAndSelect('stock.size', 'size')
+      .where('stock.id = :stockId', { stockId })
+      .addOrderBy('size.size', 'ASC')
+      .getOne();
+  }
+
+  async findAllSneakersByName(queries: ApiQuery) {
+    let { page, limit, sortedBy, gender, name } = queries;
+    page = page ? +page : 1;
+    limit = limit ? +limit : 10;
+
+    const query = this.createQueryBuilder('sneaker')
+      .leftJoinAndSelect('sneaker.stocks', 'stock')
+      .leftJoinAndSelect('stock.size', 'size')
+      .where('sneaker.name LIKE :name', { name: `%${name}%` });
+
+    if (sortedBy) {
+      query.orderBy('sneaker.createdAt', sortedBy);
+    } else {
+      query.orderBy('sneaker.createdAt', 'DESC');
+    }
+
+    if (gender) {
+      query.andWhere('sneaker.gender = :gender', { gender });
+    }
+
+    return {
+      page: page,
+      limit: limit,
+      total: await query.getCount(),
+      data: await query
+        .skip((page - 1) * limit)
+        .take(limit)
+        .addOrderBy('size.size', 'ASC')
+        .getMany(),
+    };
   }
 
   async updateSneaker(

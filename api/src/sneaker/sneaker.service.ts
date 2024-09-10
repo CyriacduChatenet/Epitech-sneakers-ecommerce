@@ -40,32 +40,58 @@ export class SneakerService implements OnApplicationBootstrap {
       throw new UnauthorizedException(err);
     }
   }
+
   async findAll(queries: ApiQuery) {
-    // try {
-    const data = await this.sneakerRepository.findAllSneakers(queries);
-    let sneakers = [];
-    const uniqueSneakers: { [key: string]: Sneaker } = {};
+    try {
+      const data = await this.sneakerRepository.findAllSneakers(queries);
+      let sneakers = [];
+      const uniqueSneakers: { [key: string]: Sneaker } = {};
 
-    data.data.map((sneaker: Sneaker) => {
-      const arrName = sneaker.name.split(' ').slice(0, -3).join(' ');
+      data.data.map((sneaker: Sneaker) => {
+        const arrName = sneaker.name.split(' ').slice(0, -3).join(' ');
 
-      if (!uniqueSneakers[arrName]) {
-        uniqueSneakers[arrName] = {
-          ...sneaker,
-          name: arrName,
-        };
-        sneakers.push(uniqueSneakers[arrName]);
+        if (!uniqueSneakers[arrName]) {
+          uniqueSneakers[arrName] = {
+            ...sneaker,
+            name: arrName,
+          };
+          sneakers.push(uniqueSneakers[arrName]);
+        }
+      });
+      return { ...data, data: sneakers, total: sneakers.length };
+    } catch (err) {
+      throw new NotFoundException(err);
+    }
+  }
+
+  async findAllByName(queries: ApiQuery) {
+    try {
+      if (!queries.name) {
+        throw new NotFoundException('Name is required');
       }
-    });
-    return { ...data, data: sneakers, total: sneakers.length };
-    // } catch (err) {
-    //   throw new NotFoundException(err);
-    // }
+
+      return await this.sneakerRepository.findAllSneakersByName(queries);
+    } catch (err) {
+      throw new NotFoundException(err);
+    }
   }
 
   async findOneById(id: string) {
     try {
-      return await this.sneakerRepository.findOneSneakerById(id);
+      const stocks = [];
+      const sneaker = await this.sneakerRepository.findOneSneakerById(id);
+      const sneakersByName = await this.findAllByName({
+        name: sneaker.name.split(' ').slice(0, -3).join(' '),
+      });
+      sneakersByName.data.map((item) => {
+        stocks.push(item.stocks[0]);
+      });
+
+      return {
+        ...sneaker,
+        name: sneaker.name.split(' ').slice(0, -3).join(' '),
+        stocks,
+      };
     } catch (err) {
       throw new NotFoundException(err);
     }
@@ -74,6 +100,14 @@ export class SneakerService implements OnApplicationBootstrap {
   async findOneByName(name: string) {
     try {
       return await this.sneakerRepository.findOneSneakerByName(name);
+    } catch (err) {
+      throw new NotFoundException(err);
+    }
+  }
+
+  async findOneByStockId(stockId: string) {
+    try {
+      return await this.sneakerRepository.findOneSneakerByStockId(stockId);
     } catch (err) {
       throw new NotFoundException(err);
     }

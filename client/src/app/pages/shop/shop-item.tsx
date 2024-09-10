@@ -18,6 +18,7 @@ function classNames(...classes: string[]) {
 
 const ShopItem = () => {
   const [sneaker, setSneaker] = useState<Sneaker>();
+  const [selectedSneaker, setSelectedSneaker] = useState<Sneaker>();
   // const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState<Stock>(
     sneaker?.stocks[0] || ({} as Stock)
@@ -88,6 +89,11 @@ const ShopItem = () => {
     setSneaker(response?.data);
   };
 
+  const fetchSneakerByStockId = async (stockId: string) => {
+    const response = await sneakerService.findOneByStockId(`${stockId}`);
+    setSelectedSneaker(response?.data);
+  };
+
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
@@ -96,7 +102,7 @@ const ShopItem = () => {
     } else {
       setOpen(true);
       console.log({
-        price_id: sneaker?.stripe_price_id ?? "",
+        price_id: selectedSneaker?.stripe_price_id ?? "",
         quantity: 1,
         thumbnail: sneaker?.image.thumbnail,
         name: sneaker?.name ?? "",
@@ -107,12 +113,12 @@ const ShopItem = () => {
       setShoppingCart((prev: any) => [
         ...prev,
         {
-          price_id: sneaker?.stripe_price_id ?? "",
+          price_id: selectedSneaker?.stripe_price_id ?? "",
           quantity: 1,
-          thumbnail: sneaker?.image.thumbnail,
-          name: sneaker?.name ?? "",
-          price: sneaker?.retailPrice ?? "",
-          id: sneaker?.id ?? "",
+          thumbnail: selectedSneaker?.image.thumbnail,
+          name: selectedSneaker?.name ?? "",
+          price: selectedSneaker?.retailPrice ?? "",
+          id: selectedSneaker?.id ?? "",
           size: selectedSize,
         },
       ]);
@@ -308,6 +314,7 @@ const ShopItem = () => {
                           key={stock.size.size}
                           value={stock.size.size}
                           disabled={stock.quantity === 0}
+                          onClick={() => fetchSneakerByStockId(stock.id)}
                           className={classNames(
                             stock.quantity > 0
                               ? "cursor-pointer bg-white text-gray-900 shadow-sm"

@@ -17,6 +17,14 @@ class SneakerService {
         }
     }
 
+    async findOneByStockId(stockId: string) {
+        try {
+            return await API().get(`/sneaker/stock/${stockId}`);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     async create(data: any) {
         try {
             return await API().post("/sneaker", data);

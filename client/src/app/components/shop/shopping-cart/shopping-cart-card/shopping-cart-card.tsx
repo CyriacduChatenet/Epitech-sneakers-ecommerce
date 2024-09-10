@@ -49,7 +49,7 @@ export const ShoppingCartCard: FC<ShoppingCart> = ({ quantity, name, thumbnail, 
           <div>
             <div className="flex justify-between text-base font-medium text-gray-900">
               <h3>
-                <Link to={`/shop/product/${id}`}>{name} - {size}</Link>
+                <Link to={`/shop/product/${id}`}>{name}</Link>
               </h3>
               <p className="ml-4">{price} €</p>
             </div>

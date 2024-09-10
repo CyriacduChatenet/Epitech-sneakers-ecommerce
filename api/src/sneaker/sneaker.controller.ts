@@ -34,6 +34,11 @@ export class SneakerController {
     return this.sneakerService.findAll(queries);
   }
 
+  @Get('list-by-name')
+  findAllByName(@Query() queries: ApiQuery) {
+    return this.sneakerService.findAllByName(queries);
+  }
+
   @Get(':id')
   findOneById(@Param('id') id: string) {
     return this.sneakerService.findOneById(id);
@@ -42,6 +47,11 @@ export class SneakerController {
   @Get('/name/:name')
   findOne(@Param('name') name: string) {
     return this.sneakerService.findOneByName(name);
+  }
+
+  @Get('/stock/:stock')
+  findOneByStockId(@Param('stock') stock: string) {
+    return this.sneakerService.findOneByStockId(stock);
   }
 
   @Patch(':id')
