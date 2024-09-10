@@ -66,10 +66,10 @@ export class Sneaker extends Timestamp {
   @Column()
   UID: string;
 
-  @Column({ nullable: true })
+  @Column()
   stripe_product_id: string;
 
-  @Column({ nullable: true })
+  @Column()
   stripe_price_id: string;
 
   @OneToMany(() => Stock, (stock) => stock.sneaker)
