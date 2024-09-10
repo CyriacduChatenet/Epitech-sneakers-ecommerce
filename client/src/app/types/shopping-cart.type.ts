@@ -7,5 +7,5 @@ export type ShoppingCart = {
     thumbnail: string;
     price: number;
     id: string;
-    size: Stock;
+    size?: Stock;
 }
