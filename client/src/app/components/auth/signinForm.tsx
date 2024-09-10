@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,43 +7,61 @@ import AuthService from "../../services/auth.service";
 import useUser from "../../context/user.context";
 import { Role } from "../../enums/role.enum";
 import useAuth from "../../context/auth.context";
+import { AxiosError } from "axios";
+
+interface SigninFormData {
+  email: string;
+  password: string;
+}
 
 export const SigninForm: FC = () => {
   const authService = new AuthService();
-  const { setUser, user } = useUser();
+  const { setUser } = useUser();
   const { setAuth } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<SigninFormData>();
   const navigate = useNavigate();
+  const [authError, setAuthError] = useState<string>("");
 
-  const onSubmit = async (data) => {
-    const isAuth = await authService.signin(data);
+  const onSubmit = async (data: SigninFormData) => {
+    try {
+      const isAuth = await authService.signin(data);
+      console.log(isAuth);
 
-    if (isAuth) {
-      setAuth(isAuth);
-      const encodedToken = window.localStorage.getItem("access_token");
+      if (isAuth) {
+        setAuth(isAuth);
+        const encodedToken = window.localStorage.getItem("access_token");
 
-      if (encodedToken) {
-        const decodedToken: {
-          email: string;
-          id: string;
-          roles: string;
-        } = jwtDecode(encodedToken);
+        if (encodedToken) {
+          const decodedToken: {
+            email: string;
+            id: string;
+            roles: string;
+          } = jwtDecode(encodedToken);
 
-        setUser({
-          email: decodedToken.email,
-          id: decodedToken.id,
-          roles: decodedToken.roles,
-        });
+          setUser({
+            email: decodedToken.email,
+            id: decodedToken.id,
+            roles: decodedToken.roles,
+          });
 
-        if(decodedToken.roles === Role.Admin) {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/");
+          if (decodedToken.roles === Role.Admin) {
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/");
+          }
         }
+      }
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        console.error(err);
+        setAuthError(err.response?.data?.message || "An error occurred");
+      } else if (err instanceof Error) {
+        console.error(err);
+        setAuthError(err.message);
       }
     }
   };
@@ -81,7 +99,7 @@ export const SigninForm: FC = () => {
           </label>
           <div className="text-sm">
             <Link
-              to={'/forgot-password'}
+              to={"/forgot-password"}
               className="font-semibold text-indigo-600 hover:text-indigo-500"
             >
               Forgot password?
@@ -100,6 +118,7 @@ export const SigninForm: FC = () => {
             <span className="text-red-500">This field is required</span>
           )}
         </div>
+        {authError && <span className="text-red-500">{authError}</span>}
       </div>
 
       <div>

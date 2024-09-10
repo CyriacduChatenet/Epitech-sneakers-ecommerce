@@ -7,16 +7,20 @@ interface IProps {
   setShowBanner: Dispatch<SetStateAction<boolean>>;
 }
 
+interface ForgotPasswordFormData {
+  email: string;
+}
+
 export const ForgotPasswordForm: FC<IProps> = ({ setShowBanner }) => {
   const authService = new AuthService();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<ForgotPasswordFormData>();
 
-  const onSubmit = async (data) => {
-    const response = await authService.forgotPassword(data);
+  const onSubmit = async (data: ForgotPasswordFormData) => {
+    const response = await authService.forgotPassword(data.email);
 
     if (response?.data) {
       setShowBanner(true);

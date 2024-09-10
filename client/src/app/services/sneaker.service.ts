@@ -1,3 +1,4 @@
+import { CreateSneaker } from "../types/sneaker.type";
 import { API } from "../utils/axios.utils";
 
 class SneakerService {
@@ -25,7 +26,7 @@ class SneakerService {
         }
     }
 
-    async create(data: any) {
+    async create(data: CreateSneaker) {
         try {
             return await API().post("/sneaker", data);
         } catch (err) {
@@ -33,7 +34,7 @@ class SneakerService {
         }
     }
 
-    async update(id: string, data: any) {
+    async update(id: string, data: CreateSneaker) {
         try {
             return await API().patch(`/sneaker/${id}`, data);
         } catch (err) {

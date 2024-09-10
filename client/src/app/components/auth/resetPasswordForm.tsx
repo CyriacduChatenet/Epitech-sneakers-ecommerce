@@ -8,21 +8,25 @@ interface IProps {
   setShowBanner: Dispatch<SetStateAction<boolean>>;
 }
 
+interface ResetPasswordFormData {
+  password: string;
+}
+
 export const ResetPasswordForm: FC<IProps> = ({ setShowBanner }) => {
   const authService = new AuthService();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<ResetPasswordFormData>();
   const navigate = useNavigate();
 
   const pathname = window.location.pathname;
 
   const token = pathname.split("/")[2];
 
-  const onSubmit = async (data) => {
-    const response = await authService.resetPassword(data, token);
+  const onSubmit = async (data: ResetPasswordFormData) => {
+    const response = await authService.resetPassword(data.password, token);
 
     if (response?.data) {
       setShowBanner(true);

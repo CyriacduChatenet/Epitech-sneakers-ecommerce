@@ -3,7 +3,7 @@ import { ShoppingCart } from "../../../../types/shopping-cart.type"
 import { Link } from "react-router-dom"
 import useShoppingCart from "../../../../context/shopping-cart.context";
 
-export const ShoppingCartCard: FC<ShoppingCart> = ({ quantity, name, thumbnail, price, price_id, id, size }) => {
+export const ShoppingCartCard: FC<ShoppingCart> = ({ quantity, name, thumbnail, price, price_id, id }) => {
     const { shoppingCart, setShoppingCart } = useShoppingCart();
 
     const handleRemove = (id: string) => {

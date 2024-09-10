@@ -7,7 +7,6 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { SigninForm } from "../../auth/signinForm";
 import { Link } from "react-router-dom";
 

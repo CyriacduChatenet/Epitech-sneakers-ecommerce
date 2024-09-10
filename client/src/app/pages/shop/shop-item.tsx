@@ -11,6 +11,7 @@ import useShoppingCart from "../../context/shopping-cart.context";
 import { Stock } from "../../types/stock.type";
 import Modal from "../../components/common/modal/modal";
 import useUser from "../../context/user.context";
+import { ShoppingCart as ShoppingCartType } from "../../types/shopping-cart.type";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -111,15 +112,15 @@ const ShopItem = () => {
         size: selectedSize,
       });
 
-      setShoppingCart((prev: any) => {
+      setShoppingCart((prev: ShoppingCartType[]) => {
         const existingItemIndex = prev.findIndex(
-          (item: any) =>
+          (item) =>
             item.id === selectedSneaker?.id && item.size === selectedSize
         );
-
+      
         if (existingItemIndex !== -1) {
-          // L'élément existe déjà, augmentez sa quantité
-          const updatedCart = prev.map((item: any, index: number) => {
+          // The item already exists, increase its quantity
+          const updatedCart = prev.map((item, index: number) => {
             if (index === existingItemIndex) {
               return {
                 ...item,
@@ -130,15 +131,16 @@ const ShopItem = () => {
           });
           return updatedCart;
         } else {
-          // L'élément n'existe pas, ajoutez-le au panier
+          // The item does not exist, add it to the cart
           return [
             ...prev,
             {
               price_id: selectedSneaker?.stripe_price_id ?? "",
               quantity: 1,
-              thumbnail: selectedSneaker?.image.thumbnail,
+              thumbnail: selectedSneaker?.image.thumbnail ?? "",
               name: selectedSneaker?.name ?? "",
-              price: selectedSneaker?.retailPrice ?? "",
+              // eslint-disable-next-line no-constant-binary-expression
+              price: Number(selectedSneaker?.retailPrice) ?? 0,
               id: selectedSneaker?.id ?? "",
               size: selectedSize,
             },

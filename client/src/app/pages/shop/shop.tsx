@@ -13,9 +13,9 @@ const ShopPage: FC = () => {
   const [products, setProducts] = useState<Sneaker[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(1000);
   const { gender } = useParams();
   const pathname = window.location.pathname;
+  const limit = 1000;
 
   const fetchSneakers = async () => {
     try {

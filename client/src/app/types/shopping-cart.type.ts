@@ -1,3 +1,5 @@
+import { Stock } from "./stock.type";
+
 export type ShoppingCart = { 
     price_id: string, 
     quantity: number, 
@@ -5,5 +7,5 @@ export type ShoppingCart = {
     thumbnail: string;
     price: number;
     id: string;
-    size: string;
+    size: Stock;
 }

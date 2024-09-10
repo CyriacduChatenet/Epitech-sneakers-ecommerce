@@ -1,8 +1,14 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import AuthService from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
+
+interface SignupFormData {
+  username: string;
+  email: string;
+  password: string;
+}
 
 export const SignupForm: FC = () => {
   const navigate = useNavigate();
@@ -11,9 +17,9 @@ export const SignupForm: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<SignupFormData>();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: SignupFormData) => {
     await authService.signup(data);
     navigate("/signin");
   };
