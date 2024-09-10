@@ -28,10 +28,11 @@ const items = [
 interface IProps {
   total: number;
   page: number;
+  limit: number;
   setPage: Dispatch<SetStateAction<number>>;
 }
 
-const Pagination: FC<IProps> = ({ total, page, setPage }) => {
+const Pagination: FC<IProps> = ({ total, page, limit, setPage }) => {
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
@@ -52,8 +53,8 @@ const Pagination: FC<IProps> = ({ total, page, setPage }) => {
         <div>
           <p className="text-sm text-gray-700">
             Showing <span className="font-medium">1</span> to{" "}
-            <span className="font-medium">10</span> of{" "}
-            <span className="font-medium">{total}</span> results
+            <span className="font-medium">{limit}</span> of{" "}
+            <span className="font-medium">{total}</span> result{total !== 1 && "s"}
           </p>
         </div>
         <div>

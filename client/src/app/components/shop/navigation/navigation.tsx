@@ -12,7 +12,7 @@ export const Navigation: FC = () => {
   const navigation = [
     { name: "Men", href: "/shop/men" },
     { name: "Women", href: "/shop/women" },
-    { name: "Unisex", href: "/shop/unisex" },
+    { name: "Youth", href: "/shop/youth" },
   ];
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

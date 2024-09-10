@@ -13,13 +13,14 @@ const ShopPage: FC = () => {
   const [products, setProducts] = useState<Sneaker[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(1000);
   const { gender } = useParams();
   const pathname = window.location.pathname;
 
   const fetchSneakers = async () => {
     try {
       const result = await sneakerService.findAll(
-        `page=${page}&limit=100&gender=${gender}`
+        `page=${page}&limit=${limit}&gender=${gender}`
       );
       console.log("API Response:", result);
 
@@ -41,7 +42,7 @@ const ShopPage: FC = () => {
   return (
     <ShopLayout>
       <ProductList products={products} total={total} gender={`${gender}`} />
-      <Pagination total={total} page={page} setPage={setPage} />
+      <Pagination total={total} page={page} limit={limit} setPage={setPage} />
     </ShopLayout>
   );
 };
