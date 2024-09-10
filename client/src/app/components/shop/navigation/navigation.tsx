@@ -5,6 +5,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import useUser from "../../../context/user.context";
 import AuthService from "../../../services/auth.service";
+import useShoppingCart from "../../../context/shopping-cart.context";
+import { ShoppingCart } from "../shopping-cart/shopping-cart";
 
 export const Navigation: FC = () => {
   const navigation = [
@@ -19,6 +21,8 @@ export const Navigation: FC = () => {
   const authService = new AuthService();
   const navigate = useNavigate();
   const { setUser } = useUser();
+  const { setOpen } = useShoppingCart();
+
   const pathname = location.pathname;
 
   const handleSignout = () => {
@@ -78,7 +82,7 @@ export const Navigation: FC = () => {
             </Link>
           ) : (
             <div className="w-28 flex justify-around items-center">
-              <button>
+              <button onClick={() => setOpen(true)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -162,7 +166,7 @@ export const Navigation: FC = () => {
                   </Link>
                 ) : (
                   <div className="flex flex-col justify-around h-40">
-                    <button>
+                    <button onClick={() => setOpen(true)}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -201,6 +205,7 @@ export const Navigation: FC = () => {
           </div>
         </DialogPanel>
       </Dialog>
+      <ShoppingCart />
     </header>
   );
 };

@@ -110,18 +110,41 @@ const ShopItem = () => {
         id: sneaker?.id ?? "",
         size: selectedSize,
       });
-      setShoppingCart((prev: any) => [
-        ...prev,
-        {
-          price_id: selectedSneaker?.stripe_price_id ?? "",
-          quantity: 1,
-          thumbnail: selectedSneaker?.image.thumbnail,
-          name: selectedSneaker?.name ?? "",
-          price: selectedSneaker?.retailPrice ?? "",
-          id: selectedSneaker?.id ?? "",
-          size: selectedSize,
-        },
-      ]);
+
+      setShoppingCart((prev: any) => {
+        const existingItemIndex = prev.findIndex(
+          (item: any) =>
+            item.id === selectedSneaker?.id && item.size === selectedSize
+        );
+
+        if (existingItemIndex !== -1) {
+          // L'élément existe déjà, augmentez sa quantité
+          const updatedCart = prev.map((item: any, index: number) => {
+            if (index === existingItemIndex) {
+              return {
+                ...item,
+                quantity: item.quantity + 1,
+              };
+            }
+            return item;
+          });
+          return updatedCart;
+        } else {
+          // L'élément n'existe pas, ajoutez-le au panier
+          return [
+            ...prev,
+            {
+              price_id: selectedSneaker?.stripe_price_id ?? "",
+              quantity: 1,
+              thumbnail: selectedSneaker?.image.thumbnail,
+              name: selectedSneaker?.name ?? "",
+              price: selectedSneaker?.retailPrice ?? "",
+              id: selectedSneaker?.id ?? "",
+              size: selectedSize,
+            },
+          ];
+        }
+      });
     }
   };
 
