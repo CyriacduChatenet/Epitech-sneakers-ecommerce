@@ -1,12 +1,9 @@
 import { FC } from 'react'
-import { Navigation } from '../navigation/navigation'
 
 export const Herobanner: FC = () => {
 
   return (
     <div className="bg-white">
-        <Navigation />
-
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div
           aria-hidden="true"

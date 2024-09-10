@@ -1,12 +1,12 @@
 import { Herobanner } from "../../components/shop/herobanner/herobanner";
+import ShopLayout from "../../components/shop/layout/layout";
 
 const HomePage = () => {
-
   return (
-    <>
-    <Herobanner />
-    </>
-  )
-}
+    <ShopLayout>
+      <Herobanner />
+    </ShopLayout>
+  );
+};
 
 export default HomePage;
