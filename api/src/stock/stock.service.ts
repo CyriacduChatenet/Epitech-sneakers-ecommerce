@@ -10,8 +10,8 @@ import { CreateStockDto } from './dto/create-stock.dto';
 import { UpdateStockDto } from './dto/update-stock.dto';
 import { StockRepository } from './stock.repository';
 import { ApiQuery } from '../types/api.type';
-import { SneakerService } from 'src/sneaker/sneaker.service';
-import { SizeService } from 'src/sneaker/size/size.service';
+import { SneakerService } from '../sneaker/sneaker.service';
+import { SizeService } from '../sneaker/size/size.service';
 
 @Injectable()
 export class StockService {
