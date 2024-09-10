@@ -36,7 +36,7 @@ const ShopPage: FC = () => {
 
   useEffect(() => {
     fetchSneakers();
-  }, [pathname]);
+  }, [pathname, page]);
 
   return (
     <ShopLayout>

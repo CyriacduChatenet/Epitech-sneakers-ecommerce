@@ -10,19 +10,21 @@ interface IProps {
 }
 
 export const ProductList: FC<IProps> = ({ products, total, gender }) => {
-
   return (
-    <section className="w-3/4" style={{ margin: "5% 12.5% 0 12.5%" }}>
-      <h1 className="font-semibold text-2xl">{gender}'s Shoes & Sneakers ({total})</h1>
-      {products.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-around items-center">
-          {products.map((sneaker: Sneaker) => (
-            <ProductCard key={sneaker.id} data={sneaker} />
+    <div className="bg-white">
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+        {gender}'s Shoes & Sneakers ({total})
+        </h2>
+
+        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+          {products.map((product) => (
+            <ProductCard key={product.id} data={product} />
           ))}
+
+          {products.length === 0 && (<div className="min-h-96"><p>No products found</p></div>)}
         </div>
-      ) : (
-        <p>No sneakers found for {gender}.</p>
-      )}
-    </section>
+      </div>
+    </div>
   );
 };
