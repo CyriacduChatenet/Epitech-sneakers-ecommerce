@@ -17,6 +17,7 @@ import useUser from "../context/user.context";
 import { AdminUserBoardPage } from "../pages/admin/board/user-board";
 import { AdminSneakerBoardPage } from "../pages/admin/board/sneaker-board";
 import { AdminSizeBoardPage } from "../pages/admin/board/size-board";
+import { AdminstockBoardPage } from "../pages/admin/board/stock-board";
 
 const AppRouter: FC = () => {
   const authService = new AuthService();
@@ -52,6 +53,7 @@ const AppRouter: FC = () => {
           <Route path="/admin/users" element={<PrivateRoute Component={AdminUserBoardPage} />} />
           <Route path="/admin/sneakers" element={<PrivateRoute Component={AdminSneakerBoardPage} />} />
           <Route path="/admin/sizes" element={<PrivateRoute Component={AdminSizeBoardPage} />} />
+          <Route path="/admin/stocks" element={<PrivateRoute Component={AdminstockBoardPage} />} />
 
           <Route path="*" element={<Page404 />}/>
         </Routes>

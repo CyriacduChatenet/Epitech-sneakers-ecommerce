@@ -1,29 +1,26 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 
 import AdminLayout from "../../../components/admin/layout/layout";
-import { UserTable } from "../../../components/admin/table/user-table";
 import Pagination from "../../../components/common/pagination/pagination";
-import UserService from "../../../services/user.service";
-import { User } from "../../../types/user.type";
-import { Modal } from "../../../components/common/modal/modal";
-import { AdminUserForm } from "../../../components/admin/forms/user-form";
 import useDebounce from "../../../hooks/useDebounce.hook";
+import { Stock } from "../../../types/stock.type";
+import { StockTable } from "../../../components/admin/table/stock-table";
+import StockService from "../../../services/stock.service";
 
-export const AdminUserBoardPage: FC = () => {
+export const AdminstockBoardPage: FC = () => {
   const [page, setPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const [datas, setDatas] = useState<User[]>([]);
+  const [datas, setDatas] = useState<Stock[]>([]);
   const [search, setSearch] = useState("");
   const [total, setTotal] = useState(0);
 
-  const userService = new UserService();
+  const stockService = new StockService();
 
   const fetchDatas = async (searchTerm = "") => {
-    const response = await userService.findAll(
+    const response = await stockService.findAll(
       `page=${page}&limit=100&search=${encodeURIComponent(searchTerm)}`
     );
     setDatas(response?.data.data);
-    setTotal(response?.data.total)
+    setTotal(response?.data.total);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,14 +42,8 @@ export const AdminUserBoardPage: FC = () => {
     <AdminLayout>
       <header className="lg:flex lg:items-center lg:justify-between mx-8 my-8">
         <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          Users ( {total} )
+          Stocks ( {total} )
         </h1>
-        <button
-          onClick={() => setShowModal(!showModal)}
-          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Create user
-        </button>
       </header>
       <section>
         <form onSubmit={handleSubmit} className="flex items-center mb-8">
@@ -82,18 +73,13 @@ export const AdminUserBoardPage: FC = () => {
             </svg>
           </button>
         </form>
-        <UserTable data={datas} setData={setDatas} />
+        <StockTable data={datas} setData={setDatas} />
         <Pagination
           total={datas.length}
           page={page}
           limit={100}
           setPage={setPage}
         />
-        {showModal ? (
-          <Modal title="Add new user">
-            <AdminUserForm edit={false} setState={setDatas} />
-          </Modal>
-        ) : null}
       </section>
     </AdminLayout>
   );

@@ -1,4 +1,4 @@
-import { DataSource, DeleteResult, Repository } from 'typeorm';
+import { Brackets, DataSource, DeleteResult, Repository } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 
 import { Stock } from './entities/stock.entity';
@@ -17,7 +17,7 @@ export class StockRepository extends Repository<Stock> {
   }
 
   async findAllStocks(queries: ApiQuery) {
-    let { page, limit, sortedBy } = queries;
+    let { page, limit, sortedBy, search } = queries;
     page = page ? +page : 1;
     limit = limit ? +limit : 10;
 
@@ -29,6 +29,16 @@ export class StockRepository extends Repository<Stock> {
       query.orderBy('stock.createdAt', sortedBy);
     } else {
       query.orderBy('stock.createdAt', 'DESC');
+    }
+
+    if (search) {
+      query.andWhere(
+        new Brackets((qb) => {
+          qb.where('sneaker.name LIKE :search', {
+            search: `%${search}%`,
+          });
+        }),
+      );
     }
 
     return {

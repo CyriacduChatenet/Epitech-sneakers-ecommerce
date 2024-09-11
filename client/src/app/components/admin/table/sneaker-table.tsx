@@ -1,7 +1,6 @@
 import { Dispatch, FC, SetStateAction } from "react";
 
 import { Sneaker } from "../../../types/sneaker.type";
-// import { AdminSneakerForm } from "../forms/sneaker-form";
 import SneakerService from "../../../services/sneaker.service";
 
 interface IProps {

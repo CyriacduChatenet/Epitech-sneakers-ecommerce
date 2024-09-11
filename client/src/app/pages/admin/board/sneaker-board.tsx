@@ -11,6 +11,7 @@ export const AdminSneakerBoardPage: FC = () => {
   const [page, setPage] = useState(1);
   const [datas, setDatas] = useState<Sneaker[]>([]);
   const [search, setSearch] = useState("");
+  const [total, setTotal] = useState(0);
 
   const sneakerService = new SneakerService();
 
@@ -19,6 +20,7 @@ export const AdminSneakerBoardPage: FC = () => {
       `page=${page}&limit=100&search=${encodeURIComponent(searchTerm)}`
     );
     setDatas(response?.data.data);
+    setTotal(response?.data.total);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +42,7 @@ export const AdminSneakerBoardPage: FC = () => {
     <AdminLayout>
       <header className="lg:flex lg:items-center lg:justify-between mx-8 my-8">
         <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          Sneakers
+          Sneakers ( {total} )
         </h1>
       </header>
       <section>

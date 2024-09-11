@@ -14,6 +14,7 @@ export const AdminSizeBoardPage: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [datas, setDatas] = useState<Size[]>([]);
   const [search, setSearch] = useState("");
+  const [total, setTotal] = useState(0);
 
   const sizeService = new SizeService();
 
@@ -22,6 +23,7 @@ export const AdminSizeBoardPage: FC = () => {
       `page=${page}&limit=100&search=${encodeURIComponent(searchTerm)}`
     );
     setDatas(response?.data.data);
+    setTotal(response?.data.total);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +45,7 @@ export const AdminSizeBoardPage: FC = () => {
     <AdminLayout>
       <header className="lg:flex lg:items-center lg:justify-between mx-8 my-8">
         <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          Sizes
+          Sizes ( {total} )
         </h1>
         <button
           onClick={() => setShowModal(!showModal)}
