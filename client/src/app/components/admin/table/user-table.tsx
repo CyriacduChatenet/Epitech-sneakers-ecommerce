@@ -40,7 +40,7 @@ export const UserTable: FC<IProps> = ({ data, setData }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((user: User, index: number) => (
+          {data.length > 0 ? data.map((user: User, index: number) => (
             <tr className="border-t">
               <td className="p-2 w-2/10">{index + 1}</td>
               <td className="p-2 w-2/10">{user.username}</td>
@@ -73,7 +73,7 @@ export const UserTable: FC<IProps> = ({ data, setData }) => {
                 </button>
               </td>
             </tr>
-          ))}
+          )) : <p className="ml-6 py-4">No users found here !</p>}
         </tbody>
       </table>
       {showModal ? (

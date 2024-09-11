@@ -7,4 +7,5 @@ export type ApiQuery = {
   roles?: string;
   gender?: 'men' | 'women' | 'unisex';
   name?: string;
+  search?: string;
 };

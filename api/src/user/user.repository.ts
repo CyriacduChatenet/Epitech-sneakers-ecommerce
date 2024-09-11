@@ -1,4 +1,4 @@
-import { DataSource, DeleteResult, Repository } from 'typeorm';
+import { Brackets, DataSource, DeleteResult, Repository } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 
 import { User } from './entities/user.entity';
@@ -21,7 +21,7 @@ export class UserRepository extends Repository<User> {
   }
 
   async findAllUser(queries: ApiQuery) {
-    let { page, limit, sortedBy, username, email, roles } = queries;
+    let { page, limit, sortedBy, username, email, roles, search } = queries;
     page = page ? +page : 1;
     limit = limit ? +limit : 10;
 
@@ -46,6 +46,16 @@ export class UserRepository extends Repository<User> {
 
     if (roles) {
       query.andWhere('user.roles = :roles', { roles });
+    }
+
+    if (search) {
+      query.andWhere(
+        new Brackets((qb) => {
+          qb.where('user.username LIKE :search', {
+            search: `%${search}%`,
+          }).orWhere('user.email LIKE :search', { search: `%${search}%` });
+        }),
+      );
     }
 
     return {
