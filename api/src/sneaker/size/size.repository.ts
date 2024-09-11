@@ -1,4 +1,4 @@
-import { DataSource, DeleteResult, Repository } from 'typeorm';
+import { Brackets, DataSource, DeleteResult, Repository } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 
 import { Size } from './entities/size.entity';
@@ -17,7 +17,7 @@ export class SizeRepository extends Repository<Size> {
   }
 
   async findAllSizes(queries: ApiQuery) {
-    let { page, limit, sortedBy } = queries;
+    let { page, limit, sortedBy, search } = queries;
     page = page ? +page : 1;
     limit = limit ? +limit : 10;
 
@@ -29,6 +29,16 @@ export class SizeRepository extends Repository<Size> {
       query.orderBy('size.createdAt', sortedBy);
     } else {
       query.orderBy('size.createdAt', 'DESC');
+    }
+
+    if (search) {
+      query.andWhere(
+        new Brackets((qb) => {
+          qb.where('size.size LIKE :search', {
+            search: `%${search}%`,
+          });
+        }),
+      );
     }
 
     return {
