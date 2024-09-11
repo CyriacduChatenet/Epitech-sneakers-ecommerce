@@ -12,7 +12,7 @@ interface IProps {
 
 export const UserTable: FC<IProps> = ({ data, setData }) => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User>();
+  const [selectedItem, setSelectedItem] = useState<User>();
 
   const userService = new UserService();
 
@@ -21,8 +21,8 @@ export const UserTable: FC<IProps> = ({ data, setData }) => {
     setData(data.filter((user: User) => user.id !== id));
   }
 
-  const editUser = (user: User) => {
-    setSelectedUser(user);
+  const editItem = (data: User) => {
+    setSelectedItem(data);
     setShowModal(true);
   }
 
@@ -40,22 +40,22 @@ export const UserTable: FC<IProps> = ({ data, setData }) => {
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? data.map((user: User, index: number) => (
+          {data.length > 0 ? data.map((item: User, index: number) => (
             <tr className="border-t">
               <td className="p-2 w-2/10">{index + 1}</td>
-              <td className="p-2 w-2/10">{user.username}</td>
-              <td className="p-2 w-2/10 text-gray-500">{user.email}</td>
-              <td className="p-2 w-2/10 text-gray-500">{user.roles}</td>
+              <td className="p-2 w-2/10">{item.username}</td>
+              <td className="p-2 w-2/10 text-gray-500">{item.email}</td>
+              <td className="p-2 w-2/10 text-gray-500">{item.roles}</td>
               <td className="p-2 w-1/10">
                 <button
-                  onClick={() => editUser(user)}
+                  onClick={() => editItem(item)}
                   className="text-indigo-600 hover:text-indigo-500"
                 >
                   Edit
                 </button>
               </td>
               <td className="p-2 w-1/10">
-                <button className="flex justify-center items-center" onClick={() => deleteUser(user.id)}>
+                <button className="flex justify-center items-center" onClick={() => deleteUser(item.id)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -78,7 +78,7 @@ export const UserTable: FC<IProps> = ({ data, setData }) => {
       </table>
       {showModal ? (
         <Modal title="Edit user">
-          <AdminUserForm edit={true} user={selectedUser} />
+          <AdminUserForm edit={true} user={selectedItem} />
         </Modal>
       ) : null}
     </>

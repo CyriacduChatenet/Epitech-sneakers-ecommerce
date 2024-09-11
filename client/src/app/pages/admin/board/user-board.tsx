@@ -9,20 +9,19 @@ import { Modal } from "../../../components/common/modal/modal";
 import { AdminUserForm } from "../../../components/admin/forms/user-form";
 import useDebounce from "../../../hooks/useDebounce.hook";
 
-export const AdminBoardPage: FC = () => {
-  const pathname = window.location.pathname;
+export const AdminUserBoardPage: FC = () => {
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
+  const [datas, setDatas] = useState<User[]>([]);
   const [search, setSearch] = useState("");
 
   const userService = new UserService();
 
-  const fetchUsers = async (searchTerm = "") => {
+  const fetchDatas = async (searchTerm = "") => {
     const response = await userService.findAll(
       `page=${page}&limit=100&search=${encodeURIComponent(searchTerm)}`
     );
-    setUsers(response?.data.data);
+    setDatas(response?.data.data);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,26 +30,26 @@ export const AdminBoardPage: FC = () => {
 
   const debouncedSearch = useDebounce(search, 2000);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    fetchUsers(debouncedSearch);
+    fetchDatas(debouncedSearch);
   };
 
   useEffect(() => {
-    fetchUsers(debouncedSearch);
+    fetchDatas(debouncedSearch);
   }, [page]);
 
   return (
     <AdminLayout>
       <header className="lg:flex lg:items-center lg:justify-between mx-8 my-8">
         <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          {pathname.split("/")[2]}
+          Users
         </h1>
         <button
           onClick={() => setShowModal(!showModal)}
           className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
-          add {pathname.split("/")[2]}
+          Create user
         </button>
       </header>
       <section>
@@ -81,16 +80,16 @@ export const AdminBoardPage: FC = () => {
             </svg>
           </button>
         </form>
-        <UserTable data={users} setData={setUsers} />
+        <UserTable data={datas} setData={setDatas} />
         <Pagination
-          total={users.length}
+          total={datas.length}
           page={page}
           limit={100}
           setPage={setPage}
         />
         {showModal ? (
           <Modal title="Add new user">
-            <AdminUserForm edit={false} setState={setUsers} />
+            <AdminUserForm edit={false} setState={setDatas} />
           </Modal>
         ) : null}
       </section>

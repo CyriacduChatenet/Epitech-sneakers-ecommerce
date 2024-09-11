@@ -5,9 +5,6 @@ import AuthService from "../../../services/auth.service";
 import useUser from "../../../context/user.context";
 
 export const Navigation: FC = () => {
-  const [isSneakersOpen, setIsSneakersOpen] = useState(false);
-  const [isStocksOpen, setIsStocksOpen] = useState(false);
-  const [isSizesOpen, setIsSizesOpen] = useState(false);
   const [isStripeOpen, setIsStripeOpen] = useState(false);
   const { setUser } = useUser();
   const navigate = useNavigate();
@@ -82,9 +79,11 @@ export const Navigation: FC = () => {
           </li>
 
           <li>
-            <button
-              onClick={() => setIsSneakersOpen(!isSneakersOpen)}
-              className="flex items-center px-4 py-2 hover:bg-gray-700 w-full text-left"
+            <Link
+              to={"/admin/sneakers"}
+              className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
+                pathname === "/admin/sneakers" ? "bg-indigo-600" : ""
+              }`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -101,61 +100,15 @@ export const Navigation: FC = () => {
                 />
               </svg>
               Sneakers
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="ml-auto h-5 w-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 9.75l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </button>
-            <ul className={`pl-4 mt-2 ${isSneakersOpen ? "block" : "hidden"}`}>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Sneaker List
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Add Sneaker
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Update Sneaker
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Delete Sneaker
-                </a>
-              </li>
-            </ul>
+            </Link>
           </li>
 
           <li>
-            <button
-              onClick={() => setIsSizesOpen(!isSizesOpen)}
-              className="flex items-center px-4 py-2 hover:bg-gray-700 w-full text-left"
+            <Link
+              to={"/admin/sizes"}
+              className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
+                pathname === "/admin/sizes" ? "bg-indigo-600" : ""
+              }`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -172,61 +125,15 @@ export const Navigation: FC = () => {
                 />
               </svg>
               Sizes
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="ml-auto h-5 w-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 9.75l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </button>
-            <ul className={`pl-4 mt-2 ${isSizesOpen ? "block" : "hidden"}`}>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Sizes List
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Add Size
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Update Size
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Delete Size
-                </a>
-              </li>
-            </ul>
+            </Link>
           </li>
 
           <li>
-            <button
-              onClick={() => setIsStocksOpen(!isStocksOpen)}
-              className="flex items-center px-4 py-2 hover:bg-gray-700 w-full text-left"
+            <Link
+              to={"/admin/stocks"}
+              className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
+                pathname === "/admin/stocks" ? "bg-indigo-600" : ""
+              }`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -243,55 +150,7 @@ export const Navigation: FC = () => {
                 />
               </svg>
               Stocks
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="ml-auto h-5 w-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 9.75l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </button>
-            <ul className={`pl-4 mt-2 ${isStocksOpen ? "block" : "hidden"}`}>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Stocks List
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Add Stock
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Update Stock
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
-                >
-                  Delete Stock
-                </a>
-              </li>
-            </ul>
+            </Link>
           </li>
 
           <li>
@@ -331,28 +190,36 @@ export const Navigation: FC = () => {
             </button>
             <ul className={`pl-4 mt-2 ${isStripeOpen ? "block" : "hidden"}`}>
               <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
+                <Link
+                  to="/admin/stripe/customers"
+                  className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
+                    pathname === "/admin/stripe/customers"
+                      ? "bg-indigo-600"
+                      : ""
+                  }`}
                 >
                   Customers
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
+                <Link
+                  to={"/admin/stripe/invoices"}
+                  className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
+                    pathname === "/admin/stripe/invoices" ? "bg-indigo-600" : ""
+                  }`}
                 >
                   Invoices
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="flex items-center px-4 py-2 hover:bg-gray-600"
+                <Link
+                  to={"/admin/stripe/products"}
+                  className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
+                    pathname === "/admin/stripe/products" ? "bg-indigo-600" : ""
+                  }`}
                 >
                   Product
-                </a>
+                </Link>
               </li>
             </ul>
           </li>
@@ -383,6 +250,33 @@ export const Navigation: FC = () => {
       </nav>
 
       {/* Footer ou déconnexion */}
+      <div className="p-4 bg-gray-900 flex-shrink-0">
+        <Link
+        to={'/'}
+          className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6 h-5 w-5 mr-3"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
+          </svg>
+          Shop
+        </Link>
+      </div>
       <div className="p-4 bg-gray-900 flex-shrink-0">
         <button
           className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded"

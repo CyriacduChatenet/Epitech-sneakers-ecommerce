@@ -7,7 +7,7 @@ import UserService from "../../../services/user.service";
 interface IProps {
   edit: boolean;
   user?: User;
-  setState: Dispatch<SetStateAction<User[]>>
+  setState?: Dispatch<SetStateAction<User[]>>
 }
 
 interface SignupFormData {
@@ -28,7 +28,7 @@ export const AdminUserForm: FC<IProps> = ({ edit, user, setState }) => {
   const userService = new UserService();
 
   const onSubmit = async (data: SignupFormData) => {
-    if (user && edit) {
+    if (user && edit && setState) {
       const updatedUser = await userService.update(user.id, data);
       if (updatedUser) {
         setState((prev) =>
@@ -37,7 +37,7 @@ export const AdminUserForm: FC<IProps> = ({ edit, user, setState }) => {
       }
     } else {
       const newUser = await userService.create(data);
-      if (newUser) {
+      if (newUser && setState) {
         setState((prev) => [...prev, newUser.data]);
       }
     }
