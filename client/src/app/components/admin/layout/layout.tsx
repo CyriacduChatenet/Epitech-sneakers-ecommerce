@@ -10,11 +10,13 @@ const AdminLayout: FC<IProps> = ({ children }) => {
   return (
     <>
       <div className="flex">
-        <Navigation />
-        <main className="w-full">{children}</main>
+        <div className="fixed top-0 left-0 h-full">
+          <Navigation />
+        </div>
+        <main className="w-full ml-[275px]">{children}</main>
       </div>
       <footer className="bg-gray-800 text-white text-center py-4">
-        <p>&copy; 2024 Sneaker City</p>
+        <p>&copy; 2024 KicksFactory</p>
       </footer>
     </>
   );

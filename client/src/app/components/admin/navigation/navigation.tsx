@@ -191,7 +191,7 @@ export const Navigation: FC = () => {
             <ul className={`pl-4 mt-2 ${isStripeOpen ? "block" : "hidden"}`}>
               <li>
                 <Link
-                  to="/admin/stripe/customers"
+                  to="#"
                   className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
                     pathname === "/admin/stripe/customers"
                       ? "bg-indigo-600"
@@ -203,7 +203,7 @@ export const Navigation: FC = () => {
               </li>
               <li>
                 <Link
-                  to={"/admin/stripe/invoices"}
+                  to={"#"}
                   className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
                     pathname === "/admin/stripe/invoices" ? "bg-indigo-600" : ""
                   }`}
@@ -213,7 +213,7 @@ export const Navigation: FC = () => {
               </li>
               <li>
                 <Link
-                  to={"/admin/stripe/products"}
+                  to={"#"}
                   className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
                     pathname === "/admin/stripe/products" ? "bg-indigo-600" : ""
                   }`}
@@ -225,8 +225,8 @@ export const Navigation: FC = () => {
           </li>
 
           <li>
-            <a
-              href="#"
+            <Link
+              to={'#'}
               className="flex items-center px-4 py-2 hover:bg-gray-700"
             >
               <svg
@@ -244,7 +244,7 @@ export const Navigation: FC = () => {
                 />
               </svg>
               Settings
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
