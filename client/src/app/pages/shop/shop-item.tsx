@@ -4,14 +4,15 @@ import { Radio, RadioGroup } from "@headlessui/react";
 
 import ShopLayout from "../../components/shop/layout/layout";
 import { Sneaker } from "../../types/sneaker.type";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import SneakerService from "../../services/sneaker.service";
 import { ShoppingCart } from "../../components/shop/shopping-cart/shopping-cart";
 import useShoppingCart from "../../context/shopping-cart.context";
 import { Stock } from "../../types/stock.type";
-import Modal from "../../components/common/modal/modal";
+import { Modal } from "../../components/common/modal/modal";
 import useUser from "../../context/user.context";
 import { ShoppingCart as ShoppingCartType } from "../../types/shopping-cart.type";
+import { SigninForm } from "../../components/auth/signinForm";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -117,7 +118,7 @@ const ShopItem = () => {
           (item) =>
             item.id === selectedSneaker?.id && item.size === selectedSize
         );
-      
+
         if (existingItemIndex !== -1) {
           // The item already exists, increase its quantity
           const updatedCart = prev.map((item, index: number) => {
@@ -427,7 +428,22 @@ const ShopItem = () => {
         </div>
       </div>
       <ShoppingCart />
-      {user.email.length === 0 && addToCart && <Modal />}
+      {user.email.length === 0 && addToCart && (
+        <Modal title="Sign up">
+          <>
+            <SigninForm />
+            <p className="mt-10 text-center text-sm text-gray-500">
+              Not a member?{" "}
+              <Link
+                to={"/signup"}
+                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              >
+                Sign up
+              </Link>
+            </p>
+          </>
+        </Modal>
+      )}
     </ShopLayout>
   );
 };

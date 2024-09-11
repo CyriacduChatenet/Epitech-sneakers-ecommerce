@@ -56,4 +56,12 @@ export class StripeProductService {
   async delete(productId: string) {
     return await this.stripe.products.del(productId);
   }
+
+  async deleteMany(productIds: string[]) {
+    productIds.forEach((productId) => {
+      setTimeout(async () => {
+        return await this.stripe.products.del(productId);
+      }, 500);
+    });
+  }
 }

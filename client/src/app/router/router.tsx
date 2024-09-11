@@ -14,6 +14,7 @@ import ForgotPasswordPage from "../pages/auth/forgot-password";
 import ResetPasswordPage from "../pages/auth/reset-password";
 import AuthService from "../services/auth.service";
 import useUser from "../context/user.context";
+import { AdminBoardPage } from "../pages/admin/board/board";
 
 const AppRouter: FC = () => {
   const authService = new AuthService();
@@ -46,6 +47,7 @@ const AppRouter: FC = () => {
           <Route path="/policy/cookies" element={<CookiesPolicyPage/>}/>
 
           <Route path="/admin/dashboard" element={<PrivateRoute Component={AdminDashboard} />} />
+          <Route path="/admin/:category" element={<PrivateRoute Component={AdminBoardPage} />} />
 
           <Route path="*" element={<Page404 />}/>
         </Routes>
