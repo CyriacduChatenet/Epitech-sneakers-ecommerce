@@ -2,6 +2,14 @@ import { User } from "../types/user.type";
 import { API } from "../utils/axios.utils";
 
 class UserService {
+  create(data: Partial<User>) {
+    try {
+      return API().post('/user', data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   findAll(query: string) {
     try {
       return API().get(`/user?${query}`);

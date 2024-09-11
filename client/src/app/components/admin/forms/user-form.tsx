@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { Dispatch, FC, SetStateAction, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { User } from "../../../types/user.type";
@@ -7,15 +7,17 @@ import UserService from "../../../services/user.service";
 interface IProps {
   edit: boolean;
   user?: User;
+  setState: Dispatch<SetStateAction<User[]>>
 }
 
 interface SignupFormData {
   username: string;
   email: string;
   password: string;
+  roles: string;
 }
 
-export const AdminUserForm: FC<IProps> = ({ edit, user }) => {
+export const AdminUserForm: FC<IProps> = ({ edit, user, setState }) => {
   const {
     register,
     handleSubmit,
@@ -27,7 +29,17 @@ export const AdminUserForm: FC<IProps> = ({ edit, user }) => {
 
   const onSubmit = async (data: SignupFormData) => {
     if (user && edit) {
-      await userService.update(user?.id, data);
+      const updatedUser = await userService.update(user.id, data);
+      if (updatedUser) {
+        setState((prev) =>
+          prev.map((u) => (u.id === user.id ? updatedUser : u))
+        );
+      }
+    } else {
+      const newUser = await userService.create(data);
+      if (newUser) {
+        setState((prev) => [...prev, newUser.data]);
+      }
     }
   };
 
@@ -36,6 +48,7 @@ export const AdminUserForm: FC<IProps> = ({ edit, user }) => {
       setValue("username", user.username);
       setValue("email", user.email);
       setValue("password", user.password);
+      setValue("roles", user.roles);
     }
   }, [user, setValue]);
 
@@ -101,6 +114,27 @@ export const AdminUserForm: FC<IProps> = ({ edit, user }) => {
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
           {errors.password && (
+            <span className="text-red-500">This field is required</span>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="roles"
+          className="block text-sm font-medium leading-6 text-gray-900"
+        >
+          Role
+        </label>
+        <div className="mt-2">
+          <input
+            id="roles"
+            type="text"
+            {...register("roles", { required: true })}
+            autoComplete="roles"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          />
+          {errors.username && (
             <span className="text-red-500">This field is required</span>
           )}
         </div>

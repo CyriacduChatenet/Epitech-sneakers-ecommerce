@@ -6,6 +6,7 @@ import Pagination from "../../../components/common/pagination/pagination";
 import UserService from "../../../services/user.service";
 import { User } from "../../../types/user.type";
 import { Modal } from "../../../components/common/modal/modal";
+import { AdminUserForm } from "../../../components/admin/forms/user-form";
 
 export const AdminBoardPage: FC = () => {
   const pathname = window.location.pathname;
@@ -50,7 +51,7 @@ export const AdminBoardPage: FC = () => {
           limit={100}
           setPage={setPage}
         />
-        {showModal ? <Modal title="Add new user"><></></Modal> : null}
+        {showModal ? <Modal title="Add new user"><AdminUserForm edit={false} setState={setUsers} /></Modal> : null}
       </section>
     </AdminLayout>
   );
