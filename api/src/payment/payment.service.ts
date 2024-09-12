@@ -40,8 +40,8 @@ export class PaymentService {
           quantity: item.quantity,
         })),
         mode: 'payment',
-        success_url: `${this.configService.get('CLIENT_APP_URL')}/payment/success`,
-        cancel_url: `${this.configService.get('CLIENT_APP_URL')}/payment/cancel`,
+        success_url: `${this.configService.get('CLIENT_APP_URL')}?payment=success`,
+        cancel_url: `${this.configService.get('CLIENT_APP_URL')}?payment=cancel`,
         invoice_creation: { enabled: true },
       });
 
