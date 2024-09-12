@@ -15,6 +15,9 @@ export const API = () => {
       return config;
     },
     (error) => {
+      if (error.response && error.response.status === 500) {
+        window.location.href = '/500';
+      }
       return Promise.reject(error);
     }
   );

@@ -18,6 +18,7 @@ import { AdminUserBoardPage } from "../pages/admin/board/user-board";
 import { AdminSneakerBoardPage } from "../pages/admin/board/sneaker-board";
 import { AdminSizeBoardPage } from "../pages/admin/board/size-board";
 import { AdminstockBoardPage } from "../pages/admin/board/stock-board";
+import Page500 from "../pages/errors/500";
 
 const AppRouter: FC = () => {
   const authService = new AuthService();
@@ -56,6 +57,7 @@ const AppRouter: FC = () => {
           <Route path="/admin/stocks" element={<PrivateRoute Component={AdminstockBoardPage} />} />
 
           <Route path="*" element={<Page404 />}/>
+          <Route path="/500" element={<Page500 />}/>
         </Routes>
     </Router>
   );
