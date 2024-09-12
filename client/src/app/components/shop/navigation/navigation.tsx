@@ -67,7 +67,7 @@ export const Navigation: FC = () => {
             <Link
               key={item.name}
               to={item.href}
-              className={`text-sm font-semibold leading-6 text-gray-900 ${
+              className={`text-sm font-semibold leading-6 ${pathname === '/' ? "text-white" : "text-gray-900"} ${
                 pathname === item.href ? "border-indigo-600 border-b-2" : ""
               }`}
             >
@@ -77,7 +77,7 @@ export const Navigation: FC = () => {
           {user.roles === "Admin" && (
             <Link
               to={"/admin/dashboard"}
-              className={`text-sm font-semibold leading-6 text-gray-900`}
+              className={`text-sm font-semibold leading-6 ${pathname === '/' ? "text-white" : "text-gray-900"}`}
             >
               Admin
             </Link>
@@ -87,7 +87,7 @@ export const Navigation: FC = () => {
           {user.email.length === 0 ? (
             <Link
               to="/signin"
-              className="text-sm font-semibold leading-6 text-gray-900"
+              className={`text-sm font-semibold leading-6 ${pathname === '/' ? "text-white" : "text-gray-900"}`}
             >
               Sign in <span aria-hidden="true">&rarr;</span>
             </Link>
@@ -99,7 +99,7 @@ export const Navigation: FC = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
-                  stroke="currentColor"
+                  stroke={pathname === '/' ? "white" : "currentColor"}
                   className="size-6"
                 >
                   <path
@@ -115,7 +115,7 @@ export const Navigation: FC = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
-                  stroke="currentColor"
+                  stroke={pathname === '/' ? "white" : "currentColor"}
                   className="size-6"
                 >
                   <path
