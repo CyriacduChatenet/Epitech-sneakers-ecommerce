@@ -5,10 +5,10 @@ import video from '../../../../assets/video/sneaker-review.mp4';
 export const Herobanner: FC = () => {
 
   return (
-    <div className="relative bg-transparent">
+    <div className="relative bg-transparent h-screen">
       {/* Sneaker Background */}
       <video 
-        className="absolute inset-0 w-full h-full object-cover opacity-80" 
+        className="absolute inset-0 w-full h-screen object-cover opacity-80" 
         autoPlay 
         muted 
         loop 
