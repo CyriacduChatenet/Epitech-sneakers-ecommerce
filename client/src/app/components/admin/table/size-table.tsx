@@ -45,7 +45,7 @@ export const SizeTable: FC<IProps> = ({ data, setData }) => {
                 <td className="p-2 w-1/10">
                 <button
                   onClick={() => editItem(item)}
-                  className="text-indigo-600 hover:text-indigo-500"
+                  className="text-orange-600 hover:text-orange-500"
                 >
                   Edit
                 </button>

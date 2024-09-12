@@ -69,13 +69,13 @@ const Pagination: FC<IProps> = ({ total, page, limit, setPage }) => {
               <span className="sr-only">Previous</span>
               <ChevronLeftIcon aria-hidden="true" className="h-5 w-5" />
             </a>
-            {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
+            {/* Current: "z-10 bg-orange-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
             <button
               onClick={() => setPage(1)}
               aria-current="page"
               className={`relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 page === 1
-                  ? "focus-visible:outline-indigo-600 text-white bg-indigo-600"
+                  ? "focus-visible:outline-orange-600 text-white bg-orange-600"
                   : "text-gray-900"
               }`}
             >
@@ -86,7 +86,7 @@ const Pagination: FC<IProps> = ({ total, page, limit, setPage }) => {
               aria-current="page"
               className={`relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 page === 2
-                  ? "focus-visible:outline-indigo-600 text-white bg-indigo-600"
+                  ? "focus-visible:outline-orange-600 text-white bg-orange-600"
                   : "text-gray-900"
               }`}
             >
@@ -97,7 +97,7 @@ const Pagination: FC<IProps> = ({ total, page, limit, setPage }) => {
               aria-current="page"
               className={`relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 page === 3
-                  ? "focus-visible:outline-indigo-600 text-white bg-indigo-600"
+                  ? "focus-visible:outline-orange-600 text-white bg-orange-600"
                   : "text-gray-900"
               }`}
             >
@@ -111,7 +111,7 @@ const Pagination: FC<IProps> = ({ total, page, limit, setPage }) => {
               aria-current="page"
               className={`relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 page === 8
-                  ? "focus-visible:outline-indigo-600 text-white bg-indigo-600"
+                  ? "focus-visible:outline-orange-600 text-white bg-orange-600"
                   : "text-gray-900"
               }`}
             >
@@ -122,7 +122,7 @@ const Pagination: FC<IProps> = ({ total, page, limit, setPage }) => {
               aria-current="page"
               className={`relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 page === 9
-                  ? "focus-visible:outline-indigo-600 text-white bg-indigo-600"
+                  ? "focus-visible:outline-orange-600 text-white bg-orange-600"
                   : "text-gray-900"
               }`}
             >
@@ -133,7 +133,7 @@ const Pagination: FC<IProps> = ({ total, page, limit, setPage }) => {
               aria-current="page"
               className={`relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                 page === 10
-                  ? "focus-visible:outline-indigo-600 text-white bg-indigo-600"
+                  ? "focus-visible:outline-orange-600 text-white bg-orange-600"
                   : "text-gray-900"
               }`}
             >

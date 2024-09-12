@@ -32,7 +32,7 @@ export const Navigation: FC = () => {
             <Link
               to="/admin/dashboard"
               className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
-                pathname === "/admin/dashboard" ? "bg-indigo-600" : ""
+                pathname === "/admin/dashboard" ? "bg-orange-600" : ""
               }`}
             >
               <svg
@@ -57,7 +57,7 @@ export const Navigation: FC = () => {
             <Link
               to={"/admin/users"}
               className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
-                pathname === "/admin/users" ? "bg-indigo-600" : ""
+                pathname === "/admin/users" ? "bg-orange-600" : ""
               }`}
             >
               <svg
@@ -82,7 +82,7 @@ export const Navigation: FC = () => {
             <Link
               to={"/admin/sneakers"}
               className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
-                pathname === "/admin/sneakers" ? "bg-indigo-600" : ""
+                pathname === "/admin/sneakers" ? "bg-orange-600" : ""
               }`}
             >
               <svg
@@ -107,7 +107,7 @@ export const Navigation: FC = () => {
             <Link
               to={"/admin/sizes"}
               className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
-                pathname === "/admin/sizes" ? "bg-indigo-600" : ""
+                pathname === "/admin/sizes" ? "bg-orange-600" : ""
               }`}
             >
               <svg
@@ -132,7 +132,7 @@ export const Navigation: FC = () => {
             <Link
               to={"/admin/stocks"}
               className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
-                pathname === "/admin/stocks" ? "bg-indigo-600" : ""
+                pathname === "/admin/stocks" ? "bg-orange-600" : ""
               }`}
             >
               <svg
@@ -194,7 +194,7 @@ export const Navigation: FC = () => {
                   to="#"
                   className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
                     pathname === "/admin/stripe/customers"
-                      ? "bg-indigo-600"
+                      ? "bg-orange-600"
                       : ""
                   }`}
                 >
@@ -205,7 +205,7 @@ export const Navigation: FC = () => {
                 <Link
                   to={"#"}
                   className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
-                    pathname === "/admin/stripe/invoices" ? "bg-indigo-600" : ""
+                    pathname === "/admin/stripe/invoices" ? "bg-orange-600" : ""
                   }`}
                 >
                   Invoices
@@ -215,7 +215,7 @@ export const Navigation: FC = () => {
                 <Link
                   to={"#"}
                   className={`flex items-center px-4 py-2 hover:bg-gray-700 ${
-                    pathname === "/admin/stripe/products" ? "bg-indigo-600" : ""
+                    pathname === "/admin/stripe/products" ? "bg-orange-600" : ""
                   }`}
                 >
                   Product
@@ -253,7 +253,7 @@ export const Navigation: FC = () => {
       <div className="p-4 bg-gray-900 flex-shrink-0">
         <Link
         to={'/'}
-          className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded"
+          className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 rounded"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -279,7 +279,7 @@ export const Navigation: FC = () => {
       </div>
       <div className="p-4 bg-gray-900 flex-shrink-0">
         <button
-          className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded"
+          className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 rounded"
           onClick={handleSignout}
         >
           <svg

@@ -25,7 +25,7 @@ const SigninPage: FC = () => {
             Not a member?{" "}
             <Link
               to={'/signup'}
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              className="font-semibold leading-6 text-orange-600 hover:text-orange-500"
             >
               Sign up
             </Link>

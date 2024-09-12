@@ -29,7 +29,7 @@ const ForgotPasswordPage: FC = () => {
             Do you have your password?{" "}
             <Link
               to={"/signin"}
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              className="font-semibold leading-6 text-orange-600 hover:text-orange-500"
             >
               Sign in
             </Link>

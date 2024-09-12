@@ -267,7 +267,7 @@ const ShopItem = () => {
                   <p className="sr-only">{reviews.average} out of 5 stars</p>
                   <a
                     href={reviews.href}
-                    className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                    className="ml-3 text-sm font-medium text-orange-600 hover:text-orange-500"
                   >
                     {reviews.totalCount} reviews
                   </a>
@@ -314,7 +314,7 @@ const ShopItem = () => {
                     <h3 className="text-sm font-medium text-gray-900">Size</h3>
                     <a
                       href="#"
-                      className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                      className="text-sm font-medium text-orange-600 hover:text-orange-500"
                     >
                       Size guide
                     </a>
@@ -336,14 +336,14 @@ const ShopItem = () => {
                             stock.quantity > 0
                               ? "cursor-pointer bg-white text-gray-900 shadow-sm"
                               : "cursor-not-allowed bg-gray-50 text-gray-200",
-                            "group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500 sm:flex-1 sm:py-6"
+                            "group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-orange-500 sm:flex-1 sm:py-6"
                           )}
                         >
                           <span>{stock.size.size}</span>
                           {stock.quantity > 0 ? (
                             <span
                               aria-hidden="true"
-                              className="pointer-events-none absolute -inset-px rounded-md border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-indigo-500"
+                              className="pointer-events-none absolute -inset-px rounded-md border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-orange-500"
                             />
                           ) : (
                             <span
@@ -374,7 +374,7 @@ const ShopItem = () => {
 
                 <button
                   type="submit"
-                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-orange-600 px-8 py-3 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                 >
                   Add to bag
                 </button>
@@ -427,7 +427,7 @@ const ShopItem = () => {
               Not a member?{" "}
               <Link
                 to={"/signup"}
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                className="font-semibold leading-6 text-orange-600 hover:text-orange-500"
               >
                 Sign up
               </Link>

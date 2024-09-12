@@ -101,7 +101,7 @@ export const ShoppingCart = () => {
                   <div className="mt-6">
                     <button
                     onClick={handlePayed}
-                      className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                      className="flex items-center justify-center rounded-md border border-transparent bg-orange-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-700"
                     >
                       Checkout
                     </button>
@@ -112,7 +112,7 @@ export const ShoppingCart = () => {
                       <button
                         type="button"
                         onClick={() => setOpen(false)}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-orange-600 hover:text-orange-500"
                       >
                         Continue Shopping
                         <span aria-hidden="true"> &rarr;</span>
