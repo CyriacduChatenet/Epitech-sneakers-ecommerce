@@ -40,7 +40,7 @@ export class SneakerRepository extends Repository<Sneaker> {
         new Brackets((qb) => {
           qb.where('sneaker.name LIKE :search', {
             search: `%${search}%`,
-          }).orWhere('sneaker.gender LIKE :search', { search: `%${search}%` });
+          }).orWhere('sneaker.name LIKE :search', { search: `%${search}%` });
         }),
       );
     }
