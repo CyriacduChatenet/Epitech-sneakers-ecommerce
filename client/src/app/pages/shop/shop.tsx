@@ -22,7 +22,6 @@ const ShopPage: FC = () => {
       const result = await sneakerService.findAll(
         `page=${page}&limit=${limit}&gender=${gender}`
       );
-      console.log("API Response:", result);
 
       if (result && result.data && Array.isArray(result.data.data)) {
         setProducts(result.data.data);

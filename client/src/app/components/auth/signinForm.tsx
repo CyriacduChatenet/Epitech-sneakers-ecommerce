@@ -29,7 +29,6 @@ export const SigninForm: FC = () => {
   const onSubmit = async (data: SigninFormData) => {
     try {
       const isAuth = await authService.signin(data);
-      console.log(isAuth);
 
       if (isAuth) {
         setAuth(isAuth);

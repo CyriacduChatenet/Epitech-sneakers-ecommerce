@@ -103,15 +103,6 @@ const ShopItem = () => {
       setAddToCart(true);
     } else {
       setOpen(true);
-      console.log({
-        price_id: selectedSneaker?.stripe_price_id ?? "",
-        quantity: 1,
-        thumbnail: sneaker?.image.thumbnail,
-        name: sneaker?.name ?? "",
-        price: sneaker?.retailPrice ?? "",
-        id: sneaker?.id ?? "",
-        size: selectedSize,
-      });
 
       setShoppingCart((prev: ShoppingCartType[]) => {
         const existingItemIndex = prev.findIndex(
