@@ -18,7 +18,7 @@ export const ProductCard: FC<IProps> = ({ data }) => {
     // </Link>
 
     <div key={data.id} className="group relative">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-white lg:aspect-none group-hover:opacity-75 lg:h-80">
         <img
           alt={data.image.thumbnail}
           src={data.image.thumbnail}
